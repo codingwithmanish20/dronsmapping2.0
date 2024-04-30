@@ -1,0 +1,22 @@
+.fixed_header{
+    position: relative;
+    display: flex;
+    padding:10px 12px;
+    justify-content: space-between;
+    box-shadow: 1px 0px 3px 0px black;
+   
+}
+.body_content{
+    margin:10px 10px;
+}
+.fixed_footer{
+    position: absolute;
+    background-color: #eaecf0;
+    bottom: 0px;
+    width: 30%;
+    height:30px;
+    align-items: center;
+    padding:12px 20px;
+    display:flex;
+     justify-content: space-between; 
+}

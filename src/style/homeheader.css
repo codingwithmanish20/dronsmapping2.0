@@ -1,0 +1,11 @@
+.homedashheader{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;  
+    background-color: black;
+    color: white;
+    height: 10vh;
+    width:96%;
+    align-items: center;
+    font-family: sans-serif;  
+}

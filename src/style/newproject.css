@@ -1,0 +1,81 @@
+.newproject_header {
+  width: 100%;
+  height: auto;
+  display: flex;
+  background-color: black;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px;
+  color: white;
+  font-family: sans-serif;
+}
+
+.left_form {
+  /* box-shadow: 0px 0px 0px 1px black; */
+  padding: 0px 30px 10px 30px;
+  margin: 14px 16px;
+  background-color: white;
+  border-radius: 10px;
+}
+.Right_map {
+  padding: 12px 30px;
+}
+
+.projectDropdown
+  .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  height: 10px;
+  background-color: #1c213e;
+  color: #96979f;
+  font-weight: bold;
+  border-radius: 45px;
+}
+
+.projectDropdown
+  .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {
+  height: 10px;
+  min-height: 0px;
+  border-radius: 45px !important;
+}
+
+.descriptionBox .css-8ewcdo-MuiInputBase-root-MuiOutlinedInput-root {
+  color: #96979f !important;
+  height: 90px !important;
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.latitudeInputBox
+  .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root.Mui-disabled {
+  background-color: #1c213e !important;
+  color: #96979f !important;
+  border-radius: 45px !important;
+  height: 45px !important;
+}
+
+.latitudeInputBox .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
+  color: #96979f !important;
+  border-radius: 8px !important;
+  height: 20px !important;
+
+}
+.projectDropdown .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
+    color: #96979f !important;
+  }
+
+  .latitudeInputBox .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled{
+    -webkit-text-fill-color: #96979f !important
+}
+
+.NewBtn.css-1fu7jd5-MuiButtonBase-root-MuiButton-root{
+  background-color: black !important;
+  color: white !important;
+  border-radius: 45px !important;
+  height: 45px !important;
+  margin-top: 30px !important;
+}
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root{
+  border-radius: 45px !important;
+}
+.css-1iledgx-MuiFormControl-root {
+  background-color: white !important;
+}

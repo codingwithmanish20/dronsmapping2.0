@@ -1,0 +1,27 @@
+
+.data_processing_header{
+    padding:10px 40px;
+   display: flex;
+   justify-content: space-between;
+}
+.data_processing_wraper{
+    box-shadow : 0 1px 3px #1018281a,0 1px 2px #1018280f!important;
+   border: 1px solid lavender;
+    height: 80vh;
+    margin:10px 20px;
+    border-radius: 20px;
+    padding:10px 12px;
+}
+.data_processing_text_heading{
+    font-size: 20px;
+    padding: 5px 10px;  
+    font-weight: lighter;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.search_wraper{
+    display: flex;
+    justify-content: space-between;
+}
+.data_table{
+    margin-top: 30px;
+}

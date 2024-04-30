@@ -1,0 +1,28 @@
+.upload_data_processing{
+    margin-top: 18px;
+}
+.data_processing_head{
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+.data_processing_text{
+    font-size: 18px;
+    font-weight: lighter;
+    margin-top: 8px;
+    margin-bottom: 10px; 
+    
+}
+.project_name{
+    margin-bottom: 15px;
+}
+.upload_dropdown{
+    margin-top: 25px;
+  
+}
+.project_or{
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+}
