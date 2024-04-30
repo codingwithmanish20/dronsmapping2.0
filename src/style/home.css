@@ -32,6 +32,8 @@
   margin-top: 15px;
   border-radius: 20px;
   margin-bottom: 20px;
+  background-color: #1c213e;
+  color: #96979f;
 }
 
 .card-content {
@@ -41,10 +43,12 @@
   align-items: center;
   justify-content: space-between;
   height: auto;
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   padding-right: 10px;
   transition: transform 0.3s ease;
+  width: 100% !important;
+
 }
 
 .card-content-wrapper {
@@ -58,13 +62,13 @@
 
 .card-content-wrapper:hover {
   height: 150px !important;
-  background-color: #66a219ed;
+  background-color: #1c213e;
   color: white;
   border-radius: 17px;
 }
 
 .card-content:hover {
-  height: 300px !important;
+  height: 400px !important;
 }
 
 .card.expanded {

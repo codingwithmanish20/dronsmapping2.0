@@ -76,6 +76,8 @@ const SideBar = ({ children }) => {
                 localStorage.removeItem('refresh_token');
 
                 // Redirect to the login page
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userPassword');
                 navigate('/login');
             } else {
                 // Handle logout failure
