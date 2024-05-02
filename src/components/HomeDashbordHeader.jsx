@@ -12,14 +12,7 @@ const HomeDashbordHeader = () => {
   const handleNavigation = () => {
     navigate("/NewProject");
   };
-  const buttonStyle = {
-    color: 'white',
-    padding:"10px 20px",
-    borderRadius: '8px',
-    backgroundColor:"#1976D9",
 
-    boxShadow: '0 0px 3px 0px black',
-  };
 
   return (
     <>
@@ -32,7 +25,15 @@ const HomeDashbordHeader = () => {
           <Button
             onClick={handleNavigation}
             startIcon={<AddIcon />}
-            style={buttonStyle}
+            style={{
+              fontFamily: "sans-serif",
+              fontWeight: "bold",
+              fontSize: "12px",
+              backgroundColor: "#1c213e",
+              padding: "10px 20px",
+              borderRadius: "30px",
+              color:"white"
+            }}
           >
              New Project
           </Button>

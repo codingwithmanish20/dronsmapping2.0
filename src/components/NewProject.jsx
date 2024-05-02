@@ -341,8 +341,8 @@ const NewProject = () => {
         className="newproject_head"
         style={{ margin: "10px 12px", borderRadius: "2px" }}
       >
-        <Grid container>
-          <Grid item xs={4}>
+        <Grid container  style={{backgroundColor:"#F5F6FF"}}>
+          <Grid item xs={4}  >
             <Box className="left_form">
               <form onSubmit={handleSubmit}>
                 <TextField
@@ -511,8 +511,8 @@ const NewProject = () => {
 
           <Grid item xs={7}>
             <Box className="Right_map">
-              <p style={{ marginLeft: "50px", fontSize: "18px" }}>
-                Select Project Location (Optional)
+              <p style={{ marginLeft: "50px", fontSize: "14px", fontFamily:"sans-serif" }}>
+                Select Project Location 
               </p>
 
               <Box className="map_content" style={{ marginTop: "20px" }}>

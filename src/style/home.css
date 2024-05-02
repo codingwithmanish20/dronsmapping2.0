@@ -1,16 +1,18 @@
 .outer_wraper {
   height: auto;
   border-radius: 10px;
-  padding: 12px 30px;
+  padding: 30px 30px;
   margin: 20px 20px;
+  background-color: #F5F6FF;
+  height:78vh;
 }
 
 .inner_wraper {
   height: auto;
   border-radius: 10px;
   /* box-shadow: 0px 0px 3px 0px black; */
-  padding: 12px 30px;
-  margin: 20px 20px;
+  /* padding: 5px 10px; */
+  /* margin: 20px 20px; */
 }
 
 .outer_header {
@@ -37,7 +39,7 @@
 }
 
 .card-content {
-  padding: 23px;
+  /* padding: 23px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,9 +47,9 @@
   height: auto;
   max-height: 400px;
   overflow-y: auto;
-  padding-right: 10px;
+  /* padding-right: 10px; */
   transition: transform 0.3s ease;
-  width: 100% !important;
+  /* width: 100% !important; */
 
 }
 

@@ -289,7 +289,7 @@ const handleChange = (event) => {
                 ),
               }}
               className="nameField"
-              style={{ width: "300px", borderRadius: "50px", marginRight: "10px" }}
+              style={{ width: "240px", borderRadius: "50px", marginRight: "10px", marginLeft:"40px" }}
             />
             <TextField
               variant="outlined"
@@ -304,12 +304,13 @@ const handleChange = (event) => {
                 ),
               }}
               className="nameField"
-              style={{ width: "300px", borderRadius: "50px" }}
+              style={{ width: "240px", borderRadius: "50px" }}
             />
           </Box>
+
           <Box className="outer_right">
             <Box className="combo_value"></Box>
-            <FormControl variant="outlined" style={{ width: "250px" }}>
+            <FormControl variant="outlined" style={{ width: "230px", marginBottom:"12px", marginRight:"26px" }}>
               <Select
                variant="outlined"
                label="Sort By order"
@@ -323,8 +324,7 @@ const handleChange = (event) => {
           </Box>
         </Box>
 
-        <Box className="inner_wraper">
-        
+        <Box className="inner_wraper"  style={{ marginTop:"8px"  }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6} lg={5}>
               <div className="card-content">
