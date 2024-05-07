@@ -341,8 +341,8 @@ const NewProject = () => {
         className="newproject_head"
         style={{ margin: "10px 12px", borderRadius: "2px" }}
       >
-        <Grid container  style={{backgroundColor:"#F5F6FF"}}>
-          <Grid item xs={4}  >
+        <Grid container style={{ backgroundColor: "#F5F6FF" }}>
+          <Grid item xs={4}>
             <Box className="left_form">
               <form onSubmit={handleSubmit}>
                 <TextField
@@ -359,7 +359,7 @@ const NewProject = () => {
                     style: {
                       backgroundColor: "#1c213e",
                       color: "#96979f",
-                      fontWeight: "bold",
+                      fontWeight: "",
                       border: "none",
                       height: "45px",
                       borderRadius: "45px",
@@ -423,6 +423,12 @@ const NewProject = () => {
                   onChange={handleLatitudeChange}
                   disabled
                   className="latitudeInputBox"
+                  InputProps={{
+                    style: { color: "white" }, // Change input text color
+                  }}
+                  InputLabelProps={{
+                    style: { color: "white" }, // Change label color
+                  }}
                 />
 
                 <span
@@ -445,7 +451,7 @@ const NewProject = () => {
                   onChange={handleLongitudeChange}
                   margin="normal"
                   disabled
-                  className="latitudeInputBox"
+                  className={`${formData.longitude !== "" && "latitudeInputBoxFilled"} latitudeInputBox`}
                   InputLabelProps={{ style: { color: "red" } }}
                 />
 
@@ -467,16 +473,16 @@ const NewProject = () => {
                   value={locationName}
                   margin="normal"
                   disabled
-                  className="latitudeInputBox"
+                  // className="latitudeInputBox"
+                  className={`latitudeInputBox ${locationName !== "" ? "latitudeInputBox" : "latitudeInputBoxFilled"}`}
                   InputLabelProps={{
                     shrink: !!locationName, // Shrink label if input has content
                     style: {
-                      color:"red",
+                      color: "red",
                       position: "absolute", // Set label position to absolute
                       top: "-4px", // Adjust top position to move the label up or down
                     },
                   }}
-                 
                 />
 
                 <span
@@ -491,7 +497,7 @@ const NewProject = () => {
 
                 <Box mt={2}>
                   <Button
-                  className="NewBtn"
+                    className="NewBtn"
                     fullWidth
                     type="submit"
                     variant="contained"
@@ -511,8 +517,14 @@ const NewProject = () => {
 
           <Grid item xs={7}>
             <Box className="Right_map">
-              <p style={{ marginLeft: "50px", fontSize: "14px", fontFamily:"sans-serif" }}>
-                Select Project Location 
+              <p
+                style={{
+                  marginLeft: "50px",
+                  fontSize: "14px",
+                  fontFamily: "sans-serif",
+                }}
+              >
+                Select Project Location
               </p>
 
               <Box className="map_content" style={{ marginTop: "20px" }}>

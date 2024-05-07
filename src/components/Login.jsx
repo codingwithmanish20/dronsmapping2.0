@@ -5,7 +5,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { styled } from "@mui/system";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import ForgetPassword from "./ForgetPassword";
+import Logo from "../Images/logo2.png";
+
 
 import "../style/login.css";
 
@@ -90,8 +93,7 @@ const Login = ({isLoginData}) => {
     <Box className="main-login">
       <Box className="login-form">
         <div className="logInLogo">
-          <p>Image Container</p>
-          <img src="" alt="" />
+          <img src={Logo} alt="" height={20}/>
         </div>
         <h2 style={{ fontFamily: "sans-serif", fontWeight: 700 }}>Login</h2>
         <p
@@ -107,6 +109,7 @@ const Login = ({isLoginData}) => {
           Enter your Credentials to access your account
         </p>
         <TextField
+        placeholder="Email"
           type="email"
           name="email" // Add name prop
           value={email}
@@ -120,6 +123,7 @@ const Login = ({isLoginData}) => {
           className="loginField"
         />
         <TextField   
+        placeholder="Password"
           type={showPassword ? "text" : "password"}
           name="password" // Add name prop
           value={password}
@@ -148,13 +152,13 @@ const Login = ({isLoginData}) => {
           onBlur={handleBlur}
           className="loginField"
         />
-        <Link
-          href="#"
+        <NavLink
+          to="/ForgetPassword"
           style={{ textAlign: "right", display: "block", margin: "10px" }}
           className="forgotpassword"
         >
           Forgot Password?
-        </Link>
+        </NavLink>
         <Button
           variant="contained"
           fullWidth
@@ -177,9 +181,16 @@ const Login = ({isLoginData}) => {
           }}
         >
           Not Registered Yet ?{" "}
-          <Link href="#" style={{ textDecoration: "none", fontWeight: 700 }}>
+          <NavLink
+          to="/newSignUp"
+          style={{ textDecoration: "none", fontWeight: 700 }}
+          className="forgotpassword"
+        >
+          Sign Up Now ?
+        </NavLink>
+          {/* <Link href="#" style={{ textDecoration: "none", fontWeight: 700 }}>
             Sign Up Now ?
-          </Link>
+          </Link> */}
         </p>
       </Box>
     </Box>

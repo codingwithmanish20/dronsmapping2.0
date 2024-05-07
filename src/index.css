@@ -4,3 +4,7 @@
   text-decoration: none;
  
 }
+.rc-anchor-light {
+  background: #ff0000;
+  color: #000;
+}

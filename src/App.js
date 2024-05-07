@@ -15,6 +15,8 @@ import Login from "./components/Login";
 import NewProject from "./components/NewProject";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute";
 import UploadDataProcessing from "./components/UploadDataProcessing";
+import ForgetPassword from "./components/ForgetPassword";
+import NewSignUp from "./components/NewSignUp";
 
 const App = () => {
   const [isSignedIn, setIsSignedIn] = useState(true);
@@ -46,6 +48,9 @@ const App = () => {
     <Routes>
       <Route path="/login" element={<Login isLoginData={setIsLogIn} />} />
       <Route path="/signUp" element={<SignUp />} />
+      <Route path="/newSignUp" element={<NewSignUp />} />
+      <Route path="/ForgetPassword" element={<ForgetPassword />} />
+
       <Route path="/uploadDataProcessing" element={<UploadDataProcessing />} />
       <Route path="/" element={<SideBar />}>
         <Route
