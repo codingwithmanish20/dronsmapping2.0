@@ -17,15 +17,18 @@ import ProtectedRoute from "./protectedRoute/ProtectedRoute";
 import UploadDataProcessing from "./components/UploadDataProcessing";
 import ForgetPassword from "./components/ForgetPassword";
 import NewSignUp from "./components/NewSignUp";
+import OtpModel from "./components/OtpModel";
 
 const App = () => {
   const [isSignedIn, setIsSignedIn] = useState(true);
   const [isLogIn, setIsLogIn] = useState(false);
   const location = useLocation();
-  const isLoginPage = location.pathname == "/login";
+  const isLoginPage = location.pathname == "/Login";
   const isHomePage = location.pathname == "/";
-  const navigate = useNavigate();
+  
 
+
+  const navigate = useNavigate();
   const handleSignIn = () => {
     setIsSignedIn(true);
   };
@@ -33,16 +36,17 @@ const App = () => {
   const handleSignOut = () => {
     setIsSignedIn(false);
   };
-
+  
   useEffect(() => {
     const data = localStorage.getItem("userEmail");
+    console.log("data:::", data)
     if (isLoginPage && data && data.length > 0) {
-      navigate("/");
+      navigate("/"); 
     }
     if (isHomePage && !data) {
       navigate("/login");
     }
-  }, []);
+  }, [isLoginPage]);
 
   return (
     <Routes>
@@ -50,6 +54,7 @@ const App = () => {
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/newSignUp" element={<NewSignUp />} />
       <Route path="/ForgetPassword" element={<ForgetPassword />} />
+      <Route path="/OtpModel" element={<OtpModel />} />
 
       <Route path="/uploadDataProcessing" element={<UploadDataProcessing />} />
       <Route path="/" element={<SideBar />}>
@@ -76,7 +81,7 @@ const App = () => {
               <Dataprocessing />
             </ProtectedRoute>
           }
-        />
+        />  
         <Route
           path="/dashbord"
           element={

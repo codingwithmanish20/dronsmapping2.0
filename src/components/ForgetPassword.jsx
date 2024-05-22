@@ -167,8 +167,6 @@ const ForgetPassword = () => {
           onBlur={handleBlurPassword}
           className="loginField"
         />
-
-
         <p
           style={{ textAlign: "right", display: "block", marginTop: "2px",marginBottom:"10px",color:"rgba(23, 124, 240, 1)",fontSize:"14px",fontWeight:400 }}
           className="forgotpassword"

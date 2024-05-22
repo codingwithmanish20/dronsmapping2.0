@@ -6,11 +6,9 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { styled } from "@mui/system";
 import { NavLink, useNavigate } from "react-router-dom";
-import ForgetPassword from "./ForgetPassword";
 import Logo from "../Images/logo2.png";
-
-
 import "../style/login.css";
+
 
 const Login = ({isLoginData}) => {
   const navigate = useNavigate();
@@ -21,7 +19,7 @@ const Login = ({isLoginData}) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const StyledIconButton = styled(IconButton)({
-    color: "white", // Adjust the color here
+    color: "white", 
   });
 
   const handleChange = (e) => {
@@ -32,6 +30,7 @@ const Login = ({isLoginData}) => {
       setPassword(value);
     }
   };
+
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -63,22 +62,23 @@ const Login = ({isLoginData}) => {
       });
 
       if (response.ok) {
-        const userData = await response.json();
-
+        const userData = await response.json();  
         localStorage.setItem('userEmail', email);
         localStorage.setItem('userPassword', password);
         localStorage.setItem('access_token', JSON.stringify(userData.access_token));
         localStorage.setItem('refresh_token', JSON.stringify(userData.refresh_token));
 
-        // Redirect to the home page
-        navigate('/'); // Change the route to the home page route
+        //  
 
+        // Redirect to the otp Model  page
+        navigate('/otpmodel'); // Change the route to the home page route
         console.log("Login successful");
         isLoginData(true);
       } else {
         alert('Login failed');
         console.error('Login failed');
         isLoginData(false);
+        
       }
     } catch (error) {
       console.error('Error:', error);
@@ -165,6 +165,7 @@ const Login = ({isLoginData}) => {
           className="loginBtn"
           onClick={handleLogin}
           disabled={isDisabled || loading}
+
         >
           {loading ? 'Logging in...' : 'Login'}
         </Button>
