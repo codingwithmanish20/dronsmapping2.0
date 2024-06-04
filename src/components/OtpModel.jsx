@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import OTPInput from 'react-otp-input';
+import Logo from "../Images/logo2.png";
 import '../style/otp.css' 
 
 const OtpModel = () => {
@@ -11,8 +12,7 @@ const OtpModel = () => {
   useEffect(() => {
     if (time > 0) {
       const timer = setTimeout(() => setTime(time - 1), 1000);
-      return () => clearTimeout(timer);
-      
+      return () => clearTimeout(timer);    
     } else {
       setIsResendVisible(true);
     }
@@ -28,17 +28,16 @@ const OtpModel = () => {
   };
 
   const handleResend = () => {
-    // Add logic handle OTP resend
-    alert("otp::::::::.......")
     setTime(60);
     setIsResendVisible(false);
-    console.log('OTP Resent');
+    console.log('OTP Resend');
   };
 
   return (
     <div className="forgot-password-container">
-        <div className="forgot-password-main">
-      <h1>Forgot Password</h1>
+    <div className="forgot-password-main">
+      <img src={Logo} alt="Logo"  style={{marginBottom:"30px", width:"80%" }}  />
+      <h1 style={{marginLeft:"-317px"}}>Login</h1>
       <p>Please enter the OTP sent to your registered email ID.</p>
       <OTPInput
         value={otp}
@@ -48,8 +47,9 @@ const OtpModel = () => {
         inputStyle="otp-input"
         renderInput={(props) => <input {...props} />}
       />
+
       <button onClick={handleSubmit} className="reset-button">
-        RESET PASSWORD
+        Login
       </button>
       <div className="timer-container">
       <p style={{fontSize:"12px"}}>Remaining time: 00:{time}s</p>

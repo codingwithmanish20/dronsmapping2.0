@@ -9,7 +9,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
 import "../style/login.css";
 
-
+ 
 const Login = ({isLoginData}) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -18,8 +18,9 @@ const Login = ({isLoginData}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
+
   const StyledIconButton = styled(IconButton)({
-    color: "white", 
+    color: "white",     
   });
 
   const handleChange = (e) => {
@@ -31,9 +32,8 @@ const Login = ({isLoginData}) => {
     }
   };
 
-
   const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
+    setShowPassword(!showPassword);  
   };
 
   const handleFocus = () => {
@@ -67,18 +67,19 @@ const Login = ({isLoginData}) => {
         localStorage.setItem('userPassword', password);
         localStorage.setItem('access_token', JSON.stringify(userData.access_token));
         localStorage.setItem('refresh_token', JSON.stringify(userData.refresh_token));
+         // navigate('/');   
 
-        //  
 
-        // Redirect to the otp Model  page
-        navigate('/otpmodel'); // Change the route to the home page route
+        navigate('/otpmodel'); 
+
+
         console.log("Login successful");
         isLoginData(true);
       } else {
         alert('Login failed');
         console.error('Login failed');
         isLoginData(false);
-        
+
       }
     } catch (error) {
       console.error('Error:', error);
@@ -88,6 +89,7 @@ const Login = ({isLoginData}) => {
   };
 
   const isDisabled = !email || !password;
+
 
   return (
     <Box className="main-login">
@@ -111,7 +113,7 @@ const Login = ({isLoginData}) => {
         <TextField
         placeholder="Email"
           type="email"
-          name="email" // Add name prop
+          name="email" 
           value={email}
           onChange={handleChange}
           variant="outlined"
@@ -123,15 +125,16 @@ const Login = ({isLoginData}) => {
           className="loginField"
         />
         <TextField   
-        placeholder="Password"
+          placeholder="Password"
           type={showPassword ? "text" : "password"}
-          name="password" // Add name prop
+          name="password" 
           value={password}
           onChange={handleChange}
           variant="outlined"
           fullWidth
           margin="normal"
           InputLabelProps={{
+            //  
             shrink: true,
           }}
           InputProps={{
@@ -148,13 +151,14 @@ const Login = ({isLoginData}) => {
               </InputAdornment>
             ),
           }}
+
           onFocus={handleFocus}
           onBlur={handleBlur}
-          className="loginField"
+          className="loginField"          
         />
         <NavLink
           to="/ForgetPassword"
-          style={{ textAlign: "right", display: "block", margin: "10px" }}
+          style={{ textAlign: "right", display: "block", margin: "10px"}}
           className="forgotpassword"
         >
           Forgot Password?
@@ -164,8 +168,9 @@ const Login = ({isLoginData}) => {
           fullWidth
           className="loginBtn"
           onClick={handleLogin}
-          disabled={isDisabled || loading}
-
+          disabled={isDisabled || loading}  
+         
+          
         >
           {loading ? 'Logging in...' : 'Login'}
         </Button>
@@ -191,7 +196,7 @@ const Login = ({isLoginData}) => {
         </NavLink>
           {/* <Link href="#" style={{ textDecoration: "none", fontWeight: 700 }}>
             Sign Up Now ?
-          </Link> */}
+          </Link> */}     
         </p>
       </Box>
     </Box>

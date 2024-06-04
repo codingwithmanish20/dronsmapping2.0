@@ -75,6 +75,7 @@ const NewSignUp = () => {
   };
 
   const isDisabled = !email || !password || !confirmPassword;
+  
   return (
     <>
       <Box className="main-login">
@@ -112,7 +113,7 @@ const NewSignUp = () => {
           <TextField
             placeholder="Password"
             type={showPassword ? "text" : "password"}
-            name="password" // Add name prop
+            name="password" 
             value={password}
             onChange={handleChange}
             style={{ marginBottom: "20px" }}
@@ -159,6 +160,7 @@ const NewSignUp = () => {
             {/* <span style={{ marginLeft: "10px" }}>I’m not robot</span> */}
             <ReCAPTCHA
               sitekey="6Lfk-dEpAAAAAFKRUVL3DOCB3gjiX3Ib5PQ7XPoX"
+              // sitekey="6LdLvOUpAAAAADPVqB4MKiMehPDG-DjduyusJEOw"
               onChange={onChange}
               // style={{
               //   background: "#1c213e",

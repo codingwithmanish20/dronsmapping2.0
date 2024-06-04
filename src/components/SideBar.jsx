@@ -91,13 +91,12 @@ const SideBar = ({ children }) => {
 
     const navigate = useNavigate()
     return (
-
         <>
             <div className="container">
                 <div className="sidebar" style={{ width: isOpen ? "280px" : "80px" }} >
                     <div className="top_section">
-                        <ReorderIcon onClick={toggle} style={{ color: "black", fontSize: "18px", padding: "8px 10px", whiteSpace: "nowrap" }} />
-                        <p style={{ display: isOpen ? "block" : "none", color: "black", fontFamily: "sans-serif", whiteSpace: "nowrap" }}> BotLabDynamics</p>
+                        <ReorderIcon onClick={toggle} style={{ color: "white", fontSize: "18px", padding: "8px 10px", whiteSpace: "nowrap" }} />
+                        <p style={{ display: isOpen ? "block" : "none", color: "white", fontFamily: "sans-serif", whiteSpace: "nowrap",padding: "21px 0px 0px 0px", }}>BotLabDynamics</p>
                     </div>
                     {
                         menuItem.map((item, index) => {
