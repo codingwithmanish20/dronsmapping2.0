@@ -69,7 +69,7 @@ const Login = ({isLoginData}) => {
         localStorage.setItem('refresh_token', JSON.stringify(userData.refresh_token));
          // navigate('/');   
 
-
+         localStorage.setItem('OtpTitle', "Login");
         navigate('/otpmodel'); 
 
 

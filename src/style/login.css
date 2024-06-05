@@ -17,6 +17,7 @@
 .loginField .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root{
     border-radius: 25px !important;
 }
+
 .loginField .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root{
     color: white;
     border-radius: 25px;
@@ -50,7 +51,11 @@
     background-color: black;
     font-weight: 600;
 }
-
+.loginBtn.css-1fu7jd5-MuiButtonBase-root-MuiButton-root:hover {
+   
+    background-color: black !important;
+  
+}
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
     display: none;
