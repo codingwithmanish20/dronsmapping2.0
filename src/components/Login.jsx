@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/system";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
@@ -168,11 +169,15 @@ const Login = ({isLoginData}) => {
           fullWidth
           className="loginBtn"
           onClick={handleLogin}
-          disabled={isDisabled || loading}  
-         
-          
+          disabled={isDisabled || loading}    
+
+
         >
-          {loading ? 'Logging in...' : 'Login'}
+           {loading ? (
+                      <CircularProgress style={{ color: "white" }} />
+                    ) : (
+                      "Login"
+                    )}
         </Button>
         <p
           style={{
