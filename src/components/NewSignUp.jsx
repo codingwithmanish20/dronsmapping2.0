@@ -9,6 +9,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import "../style/login.css";
+import  api from '../services'
+// import Turnstile, { useTurnstile } from "react-turnstile";
 
 // site key in the HTML code your site serves to users. =>  6Lfk-dEpAAAAAFKRUVL3DOCB3gjiX3Ib5PQ7XPoX
 // communicate btw site and recapcha => 6Lfk-dEpAAAAAOrMp7sVP7AjNZ77ek5j_8vOFQam
@@ -74,7 +76,21 @@ const NewSignUp = () => {
     event.preventDefault();
   };
 
-  const isDisabled = !email || !password || !confirmPassword;
+  // const turnstile = useTurnstile();
+
+  const isDisabled = !email || !password;
+
+  const handleSubmit=async()=>{
+    
+    try {
+      const res=await api.register.signup({email,password})
+      console.log('res',res)
+      
+    } catch (error) {
+      console.error('Error while calling singup api',error)
+      
+    }
+  }
   
   return (
     <>
@@ -169,12 +185,25 @@ const NewSignUp = () => {
               // }}
               style={{display:"flex",justifyContent:"center",marginBottom:"20px"}}
             />
+
+
+             {/* <Turnstile
+      sitekey="1x00000000000000000000AA"
+      onVerify={(token) => {
+        fetch("/login", {
+          method: "POST",
+          body: JSON.stringify({ token }),
+        }).then((response) => {
+          if (!response.ok) turnstile.reset();
+        });
+      }}
+    /> */}
           </div>
           <Button
             variant="contained"
             fullWidth
             className="loginBtn"
-            onClick={null}
+            onClick={handleSubmit}
             disabled={isDisabled || loading}
           >
             {loading ? "Register..." : "Register"}
@@ -192,7 +221,7 @@ const NewSignUp = () => {
               marginTop: "20px",
             }}
           >
-            Already have an account ?{" "}
+            Already have an account?{" "}
             <NavLink
               to="/login"
               style={{

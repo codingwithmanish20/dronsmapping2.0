@@ -10,7 +10,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
 import "../style/login.css";
 
- 
+
+
 const Login = ({isLoginData}) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -135,7 +136,7 @@ const Login = ({isLoginData}) => {
           fullWidth
           margin="normal"
           InputLabelProps={{
-            //  
+          
             shrink: true,
           }}
           InputProps={{
