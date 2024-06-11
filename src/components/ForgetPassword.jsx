@@ -6,11 +6,13 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { styled } from "@mui/system";
 import { NavLink, useNavigate, useHistory } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 import Logo from "../Images/logo2.png";
-import NewSignUp from "./NewSignUp";
-
+import api from '../services'
 import "../style/login.css";
-
+import useToast from '../hooks/useToast.js'
+import { errorHandler } from "../helper/handleError.js";
+import { blue } from '@mui/material/colors';
 const ForgetPassword = () => {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setisValidPassword] = useState(false);
@@ -25,7 +27,7 @@ const ForgetPassword = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusPasswod, setIsFocusPassword] = useState(false); // we are using it for confirm password Focus
   let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
-
+const toast = useToast()
   const StyledIconButton = styled(IconButton)({
     color: "white", // Adjust the color here
   });
@@ -84,16 +86,31 @@ const ForgetPassword = () => {
     console.log(isValidEmail, "isValidData");
   }, [email]);
 
-  const onClickButton = () => {
-    localStorage.setItem("OtpTitle", "Forget");
+  const onClickButton = async() => {
+    setLoading(true)
+    try {
+      const payload={
+        email,password,confirmPassword
+      }
+      const res=await api.register.resetPassword(payload)
+      localStorage.setItem("OtpTitle", "Forget");
+      setLoading(false)
     navigate("/OtpModel");
+    } catch (error) {
+      const errorMessage=errorHandler(error)
+      toast(errorMessage,'error')
+      setLoading(false)
+
+      
+    }
+    
   };
 
   const isDisabled = !email || !password || !confirmPassword;
   return (
     <>
       <Box className="main-login">
-        <Box className="login-form">
+        <Box className="signup-form">
           <div className="logInLogo">
             <img src={Logo} alt="logo" height={20} width={270} />
           </div>
@@ -108,7 +125,7 @@ const ForgetPassword = () => {
               fontWeight: 400,
               fontFamily: "sans-serif",
               marginTop: "14px",
-              marginBottom: "40px",
+              marginBottom: "32px",
               fontSize: "14px",
             }}
           >
@@ -117,7 +134,7 @@ const ForgetPassword = () => {
           <TextField
             placeholder="Email"
             type="email"
-            name="email" // Add name prop
+            name="email"
             value={email}
             onChange={handleChange}
             variant="outlined"
@@ -202,21 +219,7 @@ const ForgetPassword = () => {
                confirm password does not match the password
             </p>
           )}
-          {/* {
-          confirmPassword == password && confirmPassword !== "" && password !=="" && <p
-          style={{ cursor:"pointer",textAlign: "right", display: "block", marginTop: "2px",marginBottom:"10px",color:"rgba(23, 124, 240, 1)",fontSize:"14px",fontWeight:400 }}
-          className="forgotpassword"
-        >
-           <NavLink
-          to="/OtpModel"
-          style={{ textDecoration: "none", fontWeight: 700 ,color:"rgba(23, 124, 240, 1)"}}
-          className="forgotpassword"
-        >
-          Generate OTP?
-        </NavLink>
-         
-        </p>
-        } */}
+          
 
         {
           (isValidEmail && isValidPassword && password == confirmPassword) ? 
@@ -238,37 +241,17 @@ const ForgetPassword = () => {
             onClick={null}
             disabled={loading}
           >
+             {loading && (
+          <CircularProgress
+            size={24}
+           sx={{color:blue[500]}}
+
+            
+          />
+        )}
             {loading ? "Logging in..." : "Confirm password"}
           </Button>
         }
-
-
-          {/* {confirmPassword == password &&
-          confirmPassword !== "" &&
-          password !== "" ? (
-            
-              <Button
-                variant="contained"
-                style={{ cursor: "pointer", marginTop: "3 0px" }}
-                fullWidth
-                className="loginBtn"
-                onClick={()=>onClickButton()}
-                disabled={isDisabled || loading}
-              >
-                {loading ? "Logging in..." : "Confirm password"}
-              </Button>
-          ) : (
-            <Button
-              variant="contained"
-              style={{ cursor: "pointer", marginTop: "3 0px" }}
-              fullWidth
-              className="loginBtn"
-              onClick={null}
-              disabled={isDisabled || loading}
-            >
-              {loading ? "Logging in..." : "Confirm password"}
-            </Button>
-          )} */}
 
           <p
             style={{

@@ -7,10 +7,22 @@
     justify-content: center;
 }
 .login-form{
-    width:24%;
-    height:64vh;
+    width:30%;
+    min-width: 320px;
+    
     /* box-shadow: 0px 0px 0px 1px black; */
-    padding: 50px 40px;
+    padding: 50px 40px  20px 40px;
+    border: 1px solid rgb(192, 191, 191);
+}
+.signup-form{
+    width:30%;
+    min-width: 320px;
+    
+    /* box-shadow: 0px 0px 0px 1px black; */
+ padding-bottom: 0;
+ padding-left:50px ;
+ padding-right: 50px;
+ padding-top: 10px;
     border: 1px solid rgb(192, 191, 191);
 }
 /* css-md26zr-MuiInputBase-root-MuiOutlinedInput-root */
@@ -23,9 +35,14 @@
     border-radius: 25px;
     background-color: #1c213e;
     height: 47px;
-    border: none;
+    border: none !important;
 
 }
+.loginField input{
+    height: 14px;
+    border: none !important;
+}
+
 .loginField .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:focus {
     outline: none; /* Remove default focus outline */
     /* Add any additional styles you want for the focused state */
@@ -35,10 +52,10 @@
     border-radius: 25px;
     background-color: #1c213e;
     height: 14px;
-    border: none;
+    border: none !important;
 }
 .logInLogo{
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     margin-top: 20px;
 }
 .forgotpassword.MuiTypography-root.MuiLink-root {
@@ -49,11 +66,14 @@
 .loginBtn.css-1fu7jd5-MuiButtonBase-root-MuiButton-root {
     border-radius: 25px !important;
     background-color: black;
+    color: white !important;
     font-weight: 600;
+    height: 40px;
 }
 .loginBtn.css-1fu7jd5-MuiButtonBase-root-MuiButton-root:hover {
    
-    background-color: black !important;
+    background-color: black;
+   
   
 }
 input[type="password"]::-ms-reveal,

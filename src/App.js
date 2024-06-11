@@ -54,7 +54,7 @@ const App = () => {
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/newSignUp" element={<NewSignUp />} />
       <Route path="/ForgetPassword" element={<ForgetPassword />} />
-      <Route path="/OtpModel" element={<OtpModel />} />
+      <Route path="/otp" element={<OtpModel />} />
 
       <Route path="/uploadDataProcessing" element={<UploadDataProcessing />} />
       <Route path="/" element={<SideBar />}>

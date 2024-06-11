@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const timeout=5000
+const timeout=15000
 const headers={
     Accept:'application/json',
     'Content-Type':'application/json',
@@ -8,7 +8,7 @@ const headers={
 
 export const mappingService=axios.create({
     baseURL:'/api',
-    credentials: 'include',
+    credentials:true ,
     timeout,
     headers
 })

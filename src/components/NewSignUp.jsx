@@ -10,7 +10,9 @@ import Logo from "../Images/logo2.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import "../style/login.css";
 import  api from '../services'
-// import Turnstile, { useTurnstile } from "react-turnstile";
+import useToast from "../hooks/useToast";
+import Turnstile, { useTurnstile } from "react-turnstile";
+import { errorHandler } from "../helper/handleError";
 
 // site key in the HTML code your site serves to users. =>  6Lfk-dEpAAAAAFKRUVL3DOCB3gjiX3Ib5PQ7XPoX
 // communicate btw site and recapcha => 6Lfk-dEpAAAAAOrMp7sVP7AjNZ77ek5j_8vOFQam
@@ -21,7 +23,13 @@ function onChange(value) {
 const NewSignUp = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [user,setUser]=useState({
+    name:'',
+    email:'',
+    password:''
+  })
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -29,20 +37,14 @@ const NewSignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusPasswod, setIsFocusPassword] = useState(false); // we are using it for confirm password Focus
-
+const toast=useToast()
   const StyledIconButton = styled(IconButton)({
     color: "white", // Adjust the color here
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    } else if (name === "confirmPassword") {
-      setConfirmPassword(value);
-    }
+    setUser(prev => ({ ...prev, [name]: value }));
   };
 
   const handleClickShowPassword = () => {
@@ -78,24 +80,29 @@ const NewSignUp = () => {
 
   // const turnstile = useTurnstile();
 
-  const isDisabled = !email || !password;
+  const isDisabled = !user.email || !user.password || !user.name;
 
   const handleSubmit=async()=>{
     
     try {
-      const res=await api.register.signup({email,password})
+      console.log('user',user)
+      const res=await api.register.signup(user)
       console.log('res',res)
       
     } catch (error) {
       console.error('Error while calling singup api',error)
+      const errorMessage=errorHandler(error)
+      toast(errorMessage)
       
     }
   }
-  
+  const handleVerify=(token)=>{
+
+  }
   return (
     <>
       <Box className="main-login">
-        <Box className="login-form">
+        <Box className="signup-form">
           <div className="logInLogo">
             <img src={Logo} alt="" height={20} width={270} />
           </div>
@@ -106,19 +113,35 @@ const NewSignUp = () => {
               fontWeight: 500,
               fontFamily: "sans-serif",
               marginTop: "14px",
-              marginBottom: "40px",
+              marginBottom: "20px",
               fontSize: "13px",
             }}
           >
             Enter your Credentials to access your account
           </p>
           <TextField
+            placeholder="Username"
+            type="text"
+            autoComplete="off"
+            name="name" // Add name prop
+            value={user.name}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            className="loginField"
+          />
+          <TextField
             placeholder="Email"
             type="email"
             name="email" // Add name prop
-            value={email}
+            value={user.email}
             onChange={handleChange}
             variant="outlined"
+            autoComplete="off"
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -130,7 +153,8 @@ const NewSignUp = () => {
             placeholder="Password"
             type={showPassword ? "text" : "password"}
             name="password" 
-            value={password}
+            autoComplete="off"
+            value={user.password}
             onChange={handleChange}
             style={{ marginBottom: "20px" }}
             variant="outlined"
@@ -157,52 +181,17 @@ const NewSignUp = () => {
             onBlur={handleBlur}
             className="loginField"
           />
-          {/* <NavLink
-            to="/ForgetPassword"
-            style={{ textAlign: "right", display: "block", margin: "10px" }}
-            className="forgotpassword"
-          >
-            Forgot Password?
-          </NavLink> */}
           <div className="">
-            {/* <input
-              type="checkbox"
-              style={{
-                borderRadius: "45px",
-                cursor: "pointer",
-                marginLeft: "20px",
-              }}
-            /> */}
-            {/* <span style={{ marginLeft: "10px" }}>I’m not robot</span> */}
-            <ReCAPTCHA
-              sitekey="6Lfk-dEpAAAAAFKRUVL3DOCB3gjiX3Ib5PQ7XPoX"
-              // sitekey="6LdLvOUpAAAAADPVqB4MKiMehPDG-DjduyusJEOw"
-              onChange={onChange}
-              // style={{
-              //   background: "#1c213e",
-              //   height: "47px",
-              //   borderRadius: "45px",
-              // }}
-              style={{display:"flex",justifyContent:"center",marginBottom:"20px"}}
-            />
-
-
              {/* <Turnstile
-      sitekey="1x00000000000000000000AA"
-      onVerify={(token) => {
-        fetch("/login", {
-          method: "POST",
-          body: JSON.stringify({ token }),
-        }).then((response) => {
-          if (!response.ok) turnstile.reset();
-        });
-      }}
+      sitekey="0x4AAAAAAAcTdSshsdxFuz_f"
+      onVerify={handleVerify}
     /> */}
           </div>
           <Button
             variant="contained"
             fullWidth
             className="loginBtn"
+            
             onClick={handleSubmit}
             disabled={isDisabled || loading}
           >
@@ -211,14 +200,14 @@ const NewSignUp = () => {
 
           <p
             style={{
-              marginBottom: "40px",
+             
               fontFamily: "sans-serif",
               fontSize: "12px",
               color: "gray",
               fontWeight: 500,
               textAlign: "center",
               display: "block",
-              marginTop: "20px",
+              marginTop: "16px",
             }}
           >
             Already have an account?{" "}
@@ -233,9 +222,6 @@ const NewSignUp = () => {
             >
               Sign in
             </NavLink>
-            {/* <Link href="#" style={{ textDecoration: "none", fontWeight: 700 }}>
-            Sign Up Now ?
-          </Link> */}
           </p>
         </Box>
       </Box>

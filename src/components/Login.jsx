@@ -8,7 +8,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/system";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
+import useToast from "../hooks/useToast";
+import { errorHandler } from "../helper/handleError";
 import "../style/login.css";
+import api from '../services'
 
 
 
@@ -19,7 +22,7 @@ const Login = ({isLoginData}) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-
+const toast=useToast()
 
   const StyledIconButton = styled(IconButton)({
     color: "white",     
@@ -54,39 +57,19 @@ const Login = ({isLoginData}) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/account/login', {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const userData = await response.json();  
-        localStorage.setItem('userEmail', email);
-        localStorage.setItem('userPassword', password);
-        localStorage.setItem('access_token', JSON.stringify(userData.access_token));
-        localStorage.setItem('refresh_token', JSON.stringify(userData.refresh_token));
-         // navigate('/');   
-
-         localStorage.setItem('OtpTitle', "Login");
-        navigate('/otpmodel'); 
-
-
-        console.log("Login successful");
-        isLoginData(true);
-      } else {
-        alert('Login failed');
-        console.error('Login failed');
-        isLoginData(false);
-
+      const res=await api.register.login({email,password})
+      if(res.status===201){
+        localStorage.setItem('auth',JSON.stringify({email,password}))
+        localStorage.setItem('otpTitle',"Login")
+        setLoading(false)
+       navigate('/otp')
       }
+      
     } catch (error) {
-      console.error('Error:', error);
-    } finally {
+      const errorMessage=errorHandler(error)
       setLoading(false);
+      toast(errorMessage,'error')
+      
     }
   };
 
@@ -134,14 +117,15 @@ const Login = ({isLoginData}) => {
           onChange={handleChange}
           variant="outlined"
           fullWidth
+          autoComplete="off"
           margin="normal"
-          InputLabelProps={{
+          // InputLabelProps={{
           
-            shrink: true,
-          }}
+          //   shrink: true,
+          // }}
           InputProps={{
             endAdornment: (
-              <InputAdornment position="end">
+              <InputAdornment position="end" className="loginField"          >
                 {isFocused && (
                   <StyledIconButton
                     onClick={handleClickShowPassword}
@@ -170,12 +154,13 @@ const Login = ({isLoginData}) => {
           fullWidth
           className="loginBtn"
           onClick={handleLogin}
-          disabled={isDisabled || loading}    
+          disabled={isDisabled || loading}  
+           
 
 
         >
            {loading ? (
-                      <CircularProgress style={{ color: "white" }} />
+                      <CircularProgress size={'1.3rem'}  style={{ color: "white" }} />
                     ) : (
                       "Login"
                     )}
@@ -200,9 +185,7 @@ const Login = ({isLoginData}) => {
         >
           Sign Up Now ?
         </NavLink>
-          {/* <Link href="#" style={{ textDecoration: "none", fontWeight: 700 }}>
-            Sign Up Now ?
-          </Link> */}     
+             
         </p>
       </Box>
     </Box>
