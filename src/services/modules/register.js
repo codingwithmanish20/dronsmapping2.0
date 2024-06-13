@@ -9,15 +9,23 @@ export const register = {
     email: email,
     password: password,
   });
-        console.log('string',body)
         let res = await mappingService.put('/account/login',body)
-        console.log("res", res)
         return res
-    },
-    async resetPassword(payload) {
-        return await mappingService.put('/account/reset-password',payload)
     },
     async otpVerification(payload) {
         return await mappingService.put('/account/auth-login',payload)
-    }
+    },
+    async sendResetPasswordOTPEmail(payload) {
+        return await mappingService.post('/account/reset-password/otp',payload)
+    },
+    async logout() {
+        return await mappingService.put('/account/logout')
+    },
+    async refreshAccessToken(accessToken) {
+        const payload={
+            access_token:accessToken
+        }
+        return await mappingService.put('/account/regenrate-access-token',payload)
+    },
+
 }

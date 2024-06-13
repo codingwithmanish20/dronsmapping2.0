@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import OTPInput from "react-otp-input";
 import Logo from "../Images/logo2.png";
 import "../style/otp.css";
+import Cookie  from 'js-cookie'
 import { NavLink, useNavigate,useHistory } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box, Button } from "@mui/material";
@@ -49,13 +50,19 @@ const toast=useToast()
     try {
       const res=await api.register.otpVerification(payload)
       if(res.status===200){
+        console.log('res',res)
+        const token=res?.data?.refresh_token?.refresh_token
+        Cookie.set('refresh_token',token)
+        localStorage.setItem('refreshStartTime', new Date().getTime());
         setLoading(false)
         toast('Logged in successfully.','success')
+        localStorage.removeItem('auth')
+        navigate('/')
       }
     } catch (error) {
       console.log(error)
       if(error.response.status===400 && error?.response?.data){
-      toast('Please enter a valid OTP.','z')
+      toast('Please enter a valid OTP.','error')
       setOtp("")
       setLoading(false)
       return
@@ -91,6 +98,7 @@ const toast=useToast()
     
   };
   let isDisabled=otp?.length!==6
+  let disabledResend=time!=0
   return (
     <div className="forgot-password-container">
       <Loading isVisible={loading} />
@@ -110,16 +118,6 @@ const toast=useToast()
           inputStyle="otp-input"
           renderInput={(props) => <input {...props} />}
         />
-
-        {/* {resultdata == otp ? (
-          <button onClick={handleSubmit} className="reset-button">
-            Login
-          </button>
-        ) : (
-          <button onClick={null} className="reset-button" style={{backgroundColor:"grey"}}>
-            Login
-          </button>
-        )} */}
         <Box mt={4}>
 
         <Button
@@ -129,7 +127,6 @@ const toast=useToast()
           onClick={handleVerify}
           disabled={isDisabled || loading}  
            
-
 
         >
            {loading ? (
@@ -143,7 +140,7 @@ const toast=useToast()
         <div className="timer-container">
           <p style={{ fontSize: "12px" }}>Remaining time: 00:{time}s</p>
           <p onClick={handleResend} style={{ fontSize: "12px" }}>
-            Don't get the code? <span className="resend-link">Resend</span>{" "}
+            Don't get the code? <span className={`resend-link ${disabledResend ? 'disabled' : ''}`}>Resend</span>{" "}
           </p>
         </div>
       </div>

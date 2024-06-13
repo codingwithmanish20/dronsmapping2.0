@@ -86,16 +86,17 @@ const toast = useToast()
     console.log(isValidEmail, "isValidData");
   }, [email]);
 
-  const onClickButton = async() => {
+  const handleResetPassword = async() => {
     setLoading(true)
     try {
       const payload={
-        email,password,confirmPassword
+        email
       }
-      const res=await api.register.resetPassword(payload)
+      const res=await api.register.sendResetPasswordOTPEmail(payload)
       localStorage.setItem("OtpTitle", "Forget");
+      localStorage.setItem("auth",JSON.stringify(email,password));
       setLoading(false)
-    navigate("/OtpModel");
+    navigate("/otp");
     } catch (error) {
       const errorMessage=errorHandler(error)
       toast(errorMessage,'error')
@@ -106,7 +107,9 @@ const toast = useToast()
     
   };
 
-  const isDisabled = !email || !password || !confirmPassword;
+  const isDisabled = !email || !password || !confirmPassword || !isValidPassword;
+
+  console.log('isDisabled',isDisabled)
   return (
     <>
       <Box className="main-login">
@@ -220,8 +223,23 @@ const toast = useToast()
             </p>
           )}
           
-
-        {
+          <Button
+            variant="contained"
+           
+            fullWidth
+            className="loginBtn"
+            onClick={handleResetPassword}
+            disabled={isDisabled}
+          >
+             {loading && (
+          <CircularProgress
+            size={24}
+           sx={{color:blue[500]}}
+          />
+        )}
+            {loading ? "Logging in..." : "Reset password"}
+          </Button>
+        {/* {
           (isValidEmail && isValidPassword && password == confirmPassword) ? 
           <Button
             variant="contained"
@@ -245,13 +263,11 @@ const toast = useToast()
           <CircularProgress
             size={24}
            sx={{color:blue[500]}}
-
-            
           />
         )}
             {loading ? "Logging in..." : "Confirm password"}
           </Button>
-        }
+        } */}
 
           <p
             style={{

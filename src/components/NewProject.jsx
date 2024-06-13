@@ -16,7 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/newproject.css";
-
+import api from '../services'
 const NewProject = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -49,19 +49,18 @@ const NewProject = () => {
   const [locationName, setLocationName] = useState("");
 
   const [categories, setCategories] = useState([]);
+  function convertToArrayOfObjects(obj) {
+    return Object.keys(obj).map(key => ({ categoryName: key, value: obj[key] }));
+  }
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(
-          "https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/dynamodb/categories",
-          {
-            credentials: "include",
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          console.log("dataCatogry", data);
+        const response=await api.dashboardApi.getallCategory()
+        if (response.status===201) {
+       
+          const data=convertToArrayOfObjects(response.data)
+          console.log("dataCatogry",response,data);
           setCategories(data);
         } else {
           throw new Error("Failed to fetch categories");
@@ -328,7 +327,7 @@ const NewProject = () => {
               fontWeight: "bold",
               fontSize: "12px",
               backgroundColor: "#1c213e",
-              padding: "10px 16px",
+              padding: "4px 12px",
               borderRadius: "30px",
             }}
             className="ProjectBtn"
@@ -382,12 +381,12 @@ const NewProject = () => {
                     value={formData.category}
                     onChange={handleChange}
                   >
-                    {categories?.map((category) => (
+                    {categories?.map((category,index) => (
                       <MenuItem
-                        key={category.CategoryID}
-                        value={category.CategoryName}
+                        key={index}
+                        value={category.categoryName}
                       >
-                        {category?.CategoryName}
+                        {category?.categoryName}
                       </MenuItem>
                     ))}
                   </Select>

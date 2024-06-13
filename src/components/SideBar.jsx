@@ -12,8 +12,8 @@ import Avatar from '@mui/material/Avatar';
 import LoginInfo from './LoginInfo';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import InfoIcon from '@mui/icons-material/Info';
-
-
+import Cookies from 'js-cookie'
+import api from '../services'
 
 import {
     FaTh,
@@ -62,26 +62,12 @@ const SideBar = ({ children }) => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch(
-                'https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/account/logout',
-                {
-                    method: 'PUT',
-                    credentials: 'include',
-                }
-            );
+            const response =await  api.register.logout()
 
-            if (response.ok) {
-                // Clear authentication data from local storage or wherever it's stored
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('refresh_token');
+            if (response.status===200) {
+                Cookies.remove('refresh_token')
 
-                // Redirect to the login page
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userPassword');
                 navigate('/login');
-            } else {
-                // Handle logout failure
-                console.error('Logout failed');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -93,33 +79,32 @@ const SideBar = ({ children }) => {
     return (
         <>
             <div className="container">
-                <div className="sidebar" style={{ width: isOpen ? "280px" : "80px" }} >
+                <div className="sidebar" style={{ width: isOpen ? "280px" : "80px", }} >
                     <div className="top_section">
                         <ReorderIcon onClick={toggle} style={{ color: "white", fontSize: "18px", padding: "8px 10px", whiteSpace: "nowrap" }} />
-                        <p style={{ display: isOpen ? "block" : "none", color: "white", fontFamily: "sans-serif", whiteSpace: "nowrap",padding: "21px 0px 0px 0px", }}>BotLabDynamics</p>
+                        <p className='sidebar-logo-title' style={{ display: isOpen ? "block" : "none", color: "white", fontFamily: "sans-serif", whiteSpace: "nowrap",padding: "21px 0px 0px 0px", }}>BotLabDynamics</p>
                     </div>
                     {
-                        menuItem.map((item, index) => {
-                            console.log("item", item)
+                        menuItem?.map((item, index) => {
                             return (
                                 <>
                                     <div key={index}>
                                         <NavLink to={item.path} className='link' style={{ color: "white", whiteSpace: "nowrap" }}>
                                             <div >{item.icon}</div>
-                                            <div className="link_text" style={{ display: isOpen ? "block" : "none", marginTop: "2px" }} >{item.name}</div>
+                                            <div className="link_text" style={{ display: isOpen ? "block" : "none" }} >{item.name}</div>
                                         </NavLink>
                                     </div>
                                 </>
                             )
                         })
                     }
-                    <div style={{ display: "flex", gap: "5px", padding: "8px 25px" }} onClick={handleLogout}>
-                        <ExitToAppIcon style={{ fontSize: "18px", cursor: "pointer" }} />
+                    <div className='link' style={{display:'flex',alignItems:'center'}}  onClick={handleLogout}>
+                        <ExitToAppIcon style={{color:'white'}} fontSize='12px' />
 
-                        <p onClick={handleLogout} style={{ display: isOpen ? "block" : "none", marginTop: "2px", fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer" }} >LogOut</p>
+                        <p onClick={handleLogout} style={{ display: isOpen ? "block" : "none",fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer" }} >Logout</p>
 
                     </div>
-                    <div style={{ display: "flex", gap: "5px", padding: "8px 25px" }}>
+                    <div className='link'>
                         <InfoIcon
                             onClick={handleAvatarClick}
                             style={{
@@ -131,27 +116,7 @@ const SideBar = ({ children }) => {
                         />
                         <p onClick={handleAvatarClick} style={{ display: isOpen ? "block" : "none", marginTop: "2px", fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer",whiteSpace: "nowrap" }}>User Info</p>
                     </div>
-                    {/* <h1 className='login_edit' style={{display: isOpen ? "block" : "none",  marginTop:"4px",  fontFamily: " sans-serif" }}>L</h1> */}
-                    {/* <div className='Login_Info'>
-                        < InfoIcon onClick={handleAvatarClick}
-                            style={{
-                                color: "black",
-                                fontSize: "45px"
-                            }}
-                        /> */}
-
-                    {/* <div className='Login_Info'>
-                        <InfoIcon
-                            onClick={handleAvatarClick}
-                            style={{
-                                color: 'white',
-                                fontSize: '30px',
-                                cursor: "pointer"
-                            }}
-
-                        />
-                        <p onClick={handleAvatarClick} style={{ display: isOpen ? "block" : "none", marginTop: "4px", fontSize: "16px", fontFamily: " sans-serif", cursor: "pointer" }}>User_Info</p>
-                    </div> */}
+                   
                     <LoginInfo open={isModalOpen} onClose={handleCloseModal} />
                 </div>
                 <main><Outlet /></main>

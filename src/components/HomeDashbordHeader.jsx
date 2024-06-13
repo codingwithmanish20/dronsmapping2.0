@@ -10,7 +10,7 @@ const HomeDashbordHeader = () => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate("/NewProject");
+    navigate("/project/new");
   };
 
 
@@ -23,6 +23,7 @@ const HomeDashbordHeader = () => {
         </div>
         <div className="rigth_btn">
           <Button
+          size="small"
             onClick={handleNavigation}
             startIcon={<AddIcon />}
             style={{
@@ -30,7 +31,7 @@ const HomeDashbordHeader = () => {
               fontWeight: "bold",
               fontSize: "12px",
               backgroundColor: "#1c213e",
-              padding: "10px 20px",
+              padding: "4px 16px",
               borderRadius: "30px",
               color:"white"
             }}

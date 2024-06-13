@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/system";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
@@ -77,22 +78,23 @@ const toast=useToast()
   const handleMouseDownConfirmPassword = (event) => {
     event.preventDefault();
   };
-
   // const turnstile = useTurnstile();
 
   const isDisabled = !user.email || !user.password || !user.name;
 
   const handleSubmit=async()=>{
-    
+    setLoading(true)
     try {
-      console.log('user',user)
       const res=await api.register.signup(user)
-      console.log('res',res)
-      
+      if(res.status=201){
+        setLoading(false)
+      }
+      setLoading(false)
     } catch (error) {
       console.error('Error while calling singup api',error)
       const errorMessage=errorHandler(error)
-      toast(errorMessage)
+      toast(errorMessage,'error')
+      setLoading(false)
       
     }
   }
@@ -191,10 +193,10 @@ const toast=useToast()
             variant="contained"
             fullWidth
             className="loginBtn"
-            
             onClick={handleSubmit}
             disabled={isDisabled || loading}
           >
+            {loading && <CircularProgress size={'1.3rem'}  style={{ color: "white" }} />}
             {loading ? "Register..." : "Register"}
           </Button>
 

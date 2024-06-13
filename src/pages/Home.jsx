@@ -65,9 +65,7 @@ const Home = () => {
       if (response.ok) {
         setFilteredProjects(data);
         setProjects(data);
-      } else {
-        console.log("response fail");
-      }
+      } 
     } catch (error) {
       console.log("Error fetching projects:", error);
     } finally {
@@ -277,6 +275,7 @@ const handleChange = (event) => {
         <Box className="outer_header">
           <Box className="outer_left">
             <TextField
+            size="small"
               variant="outlined"
               label="Search Project By Name"
               value={searchText}
@@ -291,8 +290,11 @@ const handleChange = (event) => {
               className="nameField"
               style={{ width: "240px", borderRadius: "50px", marginRight: "10px", marginLeft:"40px" }}
             />
+          
             <TextField
               variant="outlined"
+              size="small"
+              id="outlined-basic" 
               label="Search Project By Category"
               value={searchCategory}
               onChange={handleCategorySearch}
@@ -310,10 +312,10 @@ const handleChange = (event) => {
 
           <Box className="outer_right">
             <Box className="combo_value"></Box>
-            <FormControl variant="outlined" style={{ width: "230px", marginBottom:"12px", marginRight:"26px" }}>
+            <FormControl  style={{ width: "230px", marginBottom:"12px", marginRight:"26px" }}>
               <Select
-               variant="outlined"
-               label="Sort By order"
+               size="small"
+               id="demo-simple-select"
                value={selectedValue}
                onChange={handleChange}
               >

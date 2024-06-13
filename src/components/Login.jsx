@@ -13,9 +13,7 @@ import { errorHandler } from "../helper/handleError";
 import "../style/login.css";
 import api from '../services'
 
-
-
-const Login = ({isLoginData}) => {
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,6 +72,7 @@ const toast=useToast()
   };
 
   const isDisabled = !email || !password;
+
 
 
   return (
