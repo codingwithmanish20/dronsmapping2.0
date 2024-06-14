@@ -68,6 +68,7 @@ main {
     gap: 5px;
     gap: 6px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .link:hover{

@@ -14,20 +14,15 @@ import ReorderIcon from '@mui/icons-material/Reorder';
 import InfoIcon from '@mui/icons-material/Info';
 import Cookies from 'js-cookie'
 import api from '../services'
-
-import {
-    FaTh,
-    FaBars,
-    FaUserAlt,
-} from "react-icons/fa"
+import ConfirmationAlert from '../shared/ConfirmationAlert';
 
 
 
-const SideBar = ({ children }) => {
+const SideBar = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isToggle, setIstoggle] = useState(false)
-
+const [showLogoutConfirmAlert,setShowLogoutConfirmAlert]=useState(false)
     const toggle = () => {
         setIsOpen(!isOpen)
         setIstoggle(!isOpen)
@@ -59,23 +54,29 @@ const SideBar = ({ children }) => {
     ]
 
 
+    const navigate = useNavigate()
 
     const handleLogout = async () => {
-        try {
-            const response =await  api.register.logout()
-
-            if (response.status===200) {
-                Cookies.remove('refresh_token')
-
-                navigate('/login');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        setShowLogoutConfirmAlert(!showLogoutConfirmAlert)
+        
     };
+const handleLogoutConfirm=async()=>{
+    try {
+        const response =await  api.register.logout()
 
+        if (response.status===200) {
+            Cookies.remove('refresh_token')
+            localStorage.removeItem('auth')
+            localStorage.removeItem('OtpTitle')
 
-    const navigate = useNavigate()
+            navigate('/login');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+}
+
     return (
         <>
             <div className="container">
@@ -121,6 +122,8 @@ const SideBar = ({ children }) => {
                 </div>
                 <main><Outlet /></main>
             </div>
+
+            <ConfirmationAlert message={"Are you sure you want to logout?"} open={showLogoutConfirmAlert} onConfirm={handleLogoutConfirm} onClose={()=>setShowLogoutConfirmAlert(!showLogoutConfirmAlert)} />
         </>
     )
 }

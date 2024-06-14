@@ -12,6 +12,7 @@ import useToast from "../hooks/useToast";
 import { errorHandler } from "../helper/handleError";
 import "../style/login.css";
 import api from '../services'
+import Loading from "../shared/Loading";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -57,8 +58,9 @@ const toast=useToast()
     try {
       const res=await api.register.login({email,password})
       if(res.status===201){
+        toast(res?.data?.message,'success')
         localStorage.setItem('auth',JSON.stringify({email,password}))
-        localStorage.setItem('otpTitle',"Login")
+        localStorage.setItem('OtpTitle',"Login")
         setLoading(false)
        navigate('/otp')
       }
@@ -72,8 +74,6 @@ const toast=useToast()
   };
 
   const isDisabled = !email || !password;
-
-
 
   return (
     <Box className="main-login">
@@ -154,9 +154,6 @@ const toast=useToast()
           className="loginBtn"
           onClick={handleLogin}
           disabled={isDisabled || loading}  
-           
-
-
         >
            {loading ? (
                       <CircularProgress size={'1.3rem'}  style={{ color: "white" }} />
@@ -187,6 +184,7 @@ const toast=useToast()
              
         </p>
       </Box>
+      <Loading isVisible={loading} />
     </Box>
   );
 };
