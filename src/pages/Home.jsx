@@ -18,12 +18,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { NavLink, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import  Bom from   "../Images/business-corporate-protection-safety-security-concept.jpg"
+import api from '../services'
+
+
 
 const Home = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const markers = useRef([]);
-
   const [lng, setLng] = useState(78.9629);
   const [lat, setLat] = useState(20.5937);
   const [zoom, setZoom] = useState(4);
@@ -46,31 +48,25 @@ const Home = () => {
   const [expandedProject, setExpandedProject] = useState(null);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
-
-
-
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   const fetchProjects = async () => {
     try {
-      const response = await fetch(
-        "https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/dynamodb/all-project-details-of-user",
-        {
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      console.log("dataValue", data)
-      if (response.ok) {
+      const response = await api.dashboardApi.getAllProjectstList()
+    
+      if (response.status===200) {
+        const data=response?.data
+        console.log("data", data)
         setFilteredProjects(data);
         setProjects(data);
+        setLoading(false);
       } 
     } catch (error) {
       console.log("Error fetching projects:", error);
     } finally {
       setLoading(false);
-    
     }
   };
 
@@ -247,10 +243,7 @@ const handleChange = (event) => {
       .setLngLat([markerLng, markerLat])
       .addTo(map.current);
 
-    // Update the markers state with the new marker
     markers.current.push(newMarker);
-
-    // Update map center to the hovered location
     map.current.flyTo({
       center: [markerLng, markerLat],
       essential: true,
@@ -259,18 +252,13 @@ const handleChange = (event) => {
 
   const handleMouseLeave = () => {
     setExpandedProject(null);
-
-    // Remove all markers from the map
     markers.current.forEach((marker) => marker.remove());
-
-    // Clear the markers array
     markers.current = [];
   };
 
   return (
     <>
       <HomeDashbordHeader />
-
       <Box className="outer_wraper">
         <Box className="outer_header">
           <Box className="outer_left">
@@ -319,7 +307,8 @@ const handleChange = (event) => {
                value={selectedValue}
                onChange={handleChange}
               >
-                <MenuItem value="0">Sort By Asc Date</MenuItem>
+                <MenuItem value="0">  
+                </MenuItem>
                 <MenuItem value="1">Sort By Desc Date</MenuItem>
               </Select>
             </FormControl>
@@ -332,12 +321,12 @@ const handleChange = (event) => {
               <div className="card-content">
                 {loading ? (
                   <CircularProgress style={{ marginTop: "10rem" }} />
-                ) : filteredProjects.length === 0 ? (
+                ) : filteredProjects?.length === 0 ? (
                   <h3 style={{ marginTop: "10rem" }}>
                     No projects available for this name or category.
                   </h3>
                 ) : (
-                  filteredProjects.map((project, index) => (
+                  filteredProjects?.map((project, index) => (
                     <div
                       className={`card ${
                         expandedProject === project.project_id ? "expanded" : ""
@@ -351,14 +340,11 @@ const handleChange = (event) => {
                       }
                       onMouseLeave={handleMouseLeave}
                       key={index}
-                      // style={{ width:"100%",
-                      //   backgroundImage: `url(${categoryImages[project.Category]})`,
-                      // }}
-
+                  
                     >
                       <div className="card-content-wrapper">
-                        <h5 style={{fontWeight:"900"}}>ProjectName : {project.ProjectName}</h5>
-                        <h5 style={{fontWeight:"900"}}>ProjectCategory : {project.Category}</h5>
+                        <h5 style={{fontWeight:"900"}}>ProjectName : {project.project_name}</h5>
+                        <h5 style={{fontWeight:"900"}}>ProjectCategory : {project.category}</h5>
                       </div>
                     </div>
                   ))

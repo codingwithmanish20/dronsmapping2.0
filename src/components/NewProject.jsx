@@ -36,32 +36,25 @@ const NewProject = () => {
   };
 
   const [formData, setFormData] = useState({
-    project_name: "",
-    category: "",
-    description: "",
-    history: "",
-    location: "",
-    status: "true",
+    name: "",
     latitude: "",
     longitude: "",
+    category: "",
+    description: "",
+    project_status: "",
+    location: "",
+
   });
 
   const [locationName, setLocationName] = useState("");
-
   const [categories, setCategories] = useState([]);
-  function convertToArrayOfObjects(obj) {
-    return Object.keys(obj).map(key => ({ categoryName: key, value: obj[key] }));
-  }
-
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response=await api.dashboardApi.getallCategory()
         if (response.status===201) {
-       
-          const data=convertToArrayOfObjects(response.data)
-          console.log("dataCatogry",response,data);
-          setCategories(data);
+          setCategories(response.data);
         } else {
           throw new Error("Failed to fetch categories");
         }
@@ -129,31 +122,16 @@ const NewProject = () => {
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
-
     setLoading(true);
-
     try {
-      const response = await fetch(
-        "https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/dynamodb/add-project",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        toast.success("Project added successfully");
-
-        // set Time 3 second by default to redirect Home page
+      const response = await api.dashboardApi.addProject(formData)
+      if (response.status==201) {
+      toast.success("Project added successfully");
         setTimeout(() => {
-          navigate("/");
+        navigate("/");
         }, 6000);
 
         // Reset all form fields
@@ -166,9 +144,10 @@ const NewProject = () => {
           status: "true",
           latitude: "",
           longitude: "",
+
         });
 
-        // Reset map coordinates and disable further edits
+       
         setLat(0);
         setLng(0);
         setIsLocationEditable(false);
@@ -223,6 +202,8 @@ const NewProject = () => {
   // }, []);
   // set the location to click on the mapBox
 
+
+  
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoicmF3YXRhbW1pZSIsImEiOiJjbG5rNzgzN28wandvMnFwMm1qbWduZ25hIn0.zjWDLv9gL6YI1uIIwPgA7A";
@@ -384,9 +365,9 @@ const NewProject = () => {
                     {categories?.map((category,index) => (
                       <MenuItem
                         key={index}
-                        value={category.categoryName}
+                        value={category.category_name}
                       >
-                        {category?.categoryName}
+                        {category?.category_name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -424,6 +405,7 @@ const NewProject = () => {
                   className="latitudeInputBox"
                   InputProps={{
                     style: { color: "white" }, // Change input text color
+                    
                   }}
                   InputLabelProps={{
                     style: { color: "white" }, // Change label color
