@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import OTPInput from "react-otp-input";
 import Logo from "../Images/logo2.png";
 import "../style/otp.css";
-import Cookie  from 'js-cookie'
-import { NavLink, useNavigate,useHistory } from "react-router-dom";
+import Cookie from 'js-cookie'
+import { NavLink, useNavigate, useHistory } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box, Button } from "@mui/material";
 import api from '../services'
@@ -16,8 +16,8 @@ const OtpModel = () => {
   const [time, setTime] = useState(60);
   const [OtpTitle, setOtpTitle] = useState("");
 
-const [loading,setLoading]=useState(false)
-const toast=useToast()
+  const [loading, setLoading] = useState(false)
+  const toast = useToast()
   useEffect(() => {
     // Retrieve data from localStorage when the component mounts
     const retrievedData = localStorage.getItem("OtpTitle");
@@ -32,7 +32,7 @@ const toast=useToast()
     if (time > 0) {
       const timer = setTimeout(() => setTime(time - 1), 1000);
       return () => clearTimeout(timer);
-    } 
+    }
   }, [time]);
 
   const handleOtpChange = (otp) => {
@@ -40,65 +40,166 @@ const toast=useToast()
     setOtp(numericValue);
   };
 
-  const handleVerify = async() => {
-    setLoading(true)
-    const auth=JSON.parse(localStorage.getItem('auth'))
-    if(auth?.email){
-      const payload={
-        email:auth.email,otp
+  const forgetPassword = async () => {
+    const auth = JSON.parse(localStorage.getItem('auth'))
+    if (auth?.email) {
+      const payload = {
+        email: auth.email, otp
       }
-    try {
-      const res=await api.register.otpVerification(payload)
-      if(res.status===200){
-        console.log('res',res)
-        const token=res?.data?.refresh_token?.refresh_token
-        Cookie.set('refresh_token',token)
-        localStorage.setItem('refreshStartTime', new Date().getTime());
-        setLoading(false)
-        toast('Logged in successfully.','success')
-        localStorage.removeItem('auth')
-        navigate('/')
-      }
-    } catch (error) {
-      console.log(error)
-      if(error.response.status===400 && error?.response?.data){
-      toast('Please enter a valid OTP.','error')
-      setOtp("")
+    const res = await api.register.otpVerification(payload)
+    if (res.status === 200) {
+      const token = res?.data?.refresh_token?.refresh_token
+      Cookie.set('refresh_token', token)
+      localStorage.setItem('refreshStartTime', new Date().getTime());
       setLoading(false)
-      return
+      toast('Logged in successfully.', 'success')
+      localStorage.removeItem('auth')
+      navigate('/')
+    }
+  }
 
-      }
-      const errorMessage=errorHandler(error)
-      toast(errorMessage,'error')
+  }
+  const resetpassword = async () => {
+    const auth = JSON.parse(localStorage.getItem('auth'))
+    const payload = {
+      email: auth.email,
+      new_password: auth.password,
+      otp: otp
+    }
+    try {
+      const res=await api.register.resetPassword(payload)
+    if(res.status===201){
+      const message=res?.data?.message || "Password updated successfully"
+      toast(message,'success')
+      navigate('/login')
+      setLoading(false)
+    }
+    } catch (error) {
+      console.error('Error::While caling reset password api',error)
       setLoading(false)
       
     }
 
-    }
 
-  
-  };
 
-  const handleResend =async () => {
-  setLoading(true)
+  }
+
+  // Send otp vericatin
+  const login=async()=>{
+    const auth = JSON.parse(localStorage.getItem('auth'))
     try {
-
-      const authData=JSON.parse(localStorage.getItem('auth'))
-
-      const res=await api.register.login(authData)
+      const payload={
+        email:auth.email,
+        password:auth.password
+      }
+      const res=await api.register.login(payload)
       if(res.status===201){
         setLoading(false)
-        setTime(60);
+        toast('OTP has been send to your registered email.','success')
+
+      }
+      
+    } catch (error) {
+      setLoading(false)
+      
+    }
+
+  }
+  const loginOtpVerifycation=async()=>{
+    const auth=JSON.parse(localStorage.getItem('auth'))
+    const payload={
+      email:auth.email,
+      otp:otp
+    }
+
+    try {
+      const res=await api.register.otpVerification(payload)
+      if(res.status==200){
+        const token = res?.data?.refresh_token?.refresh_token
+        Cookie.set('refresh_token', token)
+        localStorage.setItem('refreshStartTime', new Date().getTime());
+        setLoading(false)
+        toast('Logged in successfully.', 'success')
+        localStorage.removeItem('auth')
+        navigate('/')
+        setLoading(false)
+      }
+      
+    } catch (error) {
+      console.error('Error::while calling login otp verification api',error)
+      const errorMessage=errorHandler(error)
+      setLoading(false);
+      toast(errorMessage,'error')
+      
+    }
+  }
+  const handleVerify = async () => {
+    setLoading(true)
+   
+      try {
+        console.log('OtpTitle',OtpTitle)
+        if (OtpTitle === "Forget") {
+          forgetPassword()
+        }else if (OtpTitle==="Login"){
+          loginOtpVerifycation()
+
+        } else {
+          resetpassword()
+
+        }
+      } catch (error) {
+        console.log(error)
+        if (error.response.status === 400 && error?.response?.data) {
+          toast('Please enter a valid OTP.', 'error')
+          setOtp("")
+          setLoading(false)
+          return
+
+        }
+        const errorMessage = errorHandler(error)
+        toast(errorMessage, 'error')
+        setLoading(false)
+
+    }
+
+
+  };
+
+  const handleResend = async () => {
+    const authData = JSON.parse(localStorage.getItem('auth'))
+    setLoading(true)
+    setOtp("")
+    try {
+      if(OtpTitle==='Forget'){
+        const res = await api.register.login(authData)
+        if (res.status === 201) {
+          setLoading(false)
+          setTime(60);
+        }
+
+      }else if (OtpTitle==="Login"){
+        login()
+
+      }else{
+        const payload={
+          user_email:authData.email
+        }
+        const res=await api.register.sendResetPasswordOTPEmail(payload)
+        if(res.status===201){
+          toast('OTP has been resent to your registered email.','success')
+        }
+        setLoading(false)
+
       }
     } catch (error) {
-      const errorMessage=errorHandler(error)
-      toast(errorMessage,'error')
+      const errorMessage = errorHandler(error)
+      toast(errorMessage, 'error')
       setLoading(false)
     }
-    
+
   };
-  let isDisabled=otp?.length!==6
-  let disabledResend=time!=0
+  let isDisabled = otp?.length !== 6
+  let disabledResend = time != 0
   return (
     <div className="forgot-password-container">
       <Loading isVisible={loading} />
@@ -120,26 +221,26 @@ const toast=useToast()
         />
         <Box mt={4}>
 
-        <Button
-          variant="contained"
-          fullWidth
-          className="loginBtn"
-          onClick={handleVerify}
-          disabled={isDisabled || loading}  
-           
+          <Button
+            variant="contained"
+            fullWidth
+            className="loginBtn"
+            onClick={handleVerify}
+            disabled={isDisabled || loading}
 
-        >
-           {loading ? (
-                      <CircularProgress size={'1.3rem'}  style={{ color: "white" }} />
-                    ) : (
-                      "Login"
-                    )}
-        </Button>
+
+          >
+            {loading ? (
+              <CircularProgress size={'1.3rem'} style={{ color: "white" }} />
+            ) : (
+              "Login"
+            )}
+          </Button>
         </Box>
 
         <div className="timer-container">
           <p style={{ fontSize: "12px" }}>Remaining time: 00:{time}s</p>
-          <p onClick={handleResend} style={{ fontSize: "12px" }}>
+          <p   onClick={disabledResend ? null : handleResend}  style={{ fontSize: "12px" }}>
             Don't get the code? <span className={`resend-link ${disabledResend ? 'disabled' : ''}`}>Resend</span>{" "}
           </p>
         </div>

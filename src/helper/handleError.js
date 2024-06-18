@@ -1,6 +1,10 @@
 export const errorHandler = (error) => {
     let message = "";
-  
+  console.log(error?.response?.data?.detail)
+  if(error?.response?.data?.detail){
+    message=error?.response?.data?.detail
+    return message
+  }
     if (error) {
       switch (error.status) {
         case 400:
@@ -17,9 +21,11 @@ export const errorHandler = (error) => {
           break;
         case 500:
           message = "Internal Server Error";
+        case 502:
+          message = "Internal Server Error";
           break;
         default:
-          message = "An error occurred";
+          message = "An error occurred please try again";
           break;
       }
     }

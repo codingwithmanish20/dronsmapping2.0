@@ -83,20 +83,20 @@ const toast = useToast()
     if (email) {
       setIsValidEmail(regex.test(email));
     }
-    console.log(isValidEmail, "isValidData");
   }, [email]);
 
   const handleResetPassword = async() => {
     setLoading(true)
     try {
-      const payload={
-        email
-      }
+      const payload=JSON.stringify({
+        user_email:email
+      })
       const res=await api.register.sendResetPasswordOTPEmail(payload)
-      localStorage.setItem("OtpTitle", "Forget");
-      localStorage.setItem("auth",JSON.stringify(email,password));
+      console.log('res',res)
+      localStorage.setItem("OtpTitle", "Reset");
+      localStorage.setItem("auth",JSON.stringify({email,password}));
       setLoading(false)
-    navigate("/otp");
+       navigate("/otp");
     } catch (error) {
       const errorMessage=errorHandler(error)
       toast(errorMessage,'error')
@@ -239,35 +239,7 @@ const toast = useToast()
         )}
             {loading ? "Logging in..." : "Reset password"}
           </Button>
-        {/* {
-          (isValidEmail && isValidPassword && password == confirmPassword) ? 
-          <Button
-            variant="contained"
-            style={{ cursor: "pointer", marginTop: "20px", backgroundColor: "black" }}
-            fullWidth
-            className="loginBtn"
-            onClick={() => onClickButton()}
-            disabled={loading}
-          >
-            {loading ? "Logging in..." : "Confirm password"}
-          </Button> : 
-          <Button
-            variant="contained"
-            style={{ cursor: "pointer", marginTop: "20px", backgroundColor: "grey",borderRadius:"25px" }}
-            fullWidth
-            className=""
-            onClick={null}
-            disabled={loading}
-          >
-             {loading && (
-          <CircularProgress
-            size={24}
-           sx={{color:blue[500]}}
-          />
-        )}
-            {loading ? "Logging in..." : "Confirm password"}
-          </Button>
-        } */}
+       
 
           <p
             style={{

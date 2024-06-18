@@ -282,6 +282,7 @@ const NewProject = () => {
     marginLeft: "50px",
     marginTop: "-10px",
   };
+  const isDisabled=!formData.project_name || !formData.category
 
   return (
     <>
@@ -290,8 +291,8 @@ const NewProject = () => {
           className="newproject_header_right"
           style={{ paddingLeft: "20px" }}
         >
-          <h1 className="pro_heading">New Project</h1>
-          <p style={{ fontSize: "12px" }}>
+          <h4 className="pro_heading">New Project</h4>
+          <p style={{ fontSize: "12px",color:'#b0b0b0' }}>
             Enter project details and organize better with BotLab Dynamics
           </p>
         </Box>
@@ -323,8 +324,8 @@ const NewProject = () => {
       >
         <Grid container style={{ backgroundColor: "#F5F6FF" }}>
           <Grid item xs={4}>
-            <Box className="left_form">
-              <form onSubmit={handleSubmit}>
+            <Box className="left-form-wraper">
+              <form  className="left_form" >
                 <TextField
                   // label="Project Name"
                   variant="outlined"
@@ -476,13 +477,19 @@ const NewProject = () => {
                   Drag the marker on the map to set the Location Name*
                 </span>
 
-                <Box mt={2}>
-                  <Button
-                    className="NewBtn"
+                <ToastContainer />
+              </form>
+                <div className="btn-box">
+                 
+                
+                  <Button  
+                  onClick={handleSubmit}
+                    className="loginBtn"
                     fullWidth
                     type="submit"
                     variant="contained"
                     color="primary"
+                    disabled={isDisabled}
                   >
                     {loading ? (
                       <CircularProgress style={{ color: "white" }} />
@@ -490,9 +497,9 @@ const NewProject = () => {
                       "Create New Project"
                     )}
                   </Button>
-                </Box>
-                <ToastContainer />
-              </form>
+
+                 
+                </div>
             </Box>
           </Grid>
 

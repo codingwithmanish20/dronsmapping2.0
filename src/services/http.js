@@ -20,6 +20,7 @@ mappingService.interceptors.request.use(
     const refreshStartTime = localStorage.getItem('refreshStartTime');
     const currentTime = new Date().getTime();
     const diff = currentTime - refreshStartTime;
+
     try {
       if (diff>=refreshTime && token) {
         const payload={

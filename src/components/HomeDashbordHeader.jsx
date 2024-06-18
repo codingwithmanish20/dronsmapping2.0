@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import AddIcon from '@mui/icons-material/Add';
 import Button from "@mui/material/Button";
@@ -18,8 +18,9 @@ const HomeDashbordHeader = () => {
     <>
       <Box className="homedashheader">
         <div className="left_text">
-          <h2>Projects</h2>
-          <p style={{fontSize:"16px"}} >Manage your projects here</p>
+          <h4>Projects</h4>
+          
+          <p style={{fontSize:"12px",color:'#b0b0b0'}} >Manage your projects here</p>
         </div>
         <div className="rigth_btn">
           <Button
