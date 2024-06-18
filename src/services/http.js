@@ -16,7 +16,7 @@ export const mappingService=axios.create({
 mappingService.interceptors.request.use(
   async  config => {
     const token = getRefreshToken();
-    const refreshTime = 25 * 60 * 1000;
+    const refreshTime = 1 * 60 * 1000;
     const refreshStartTime = localStorage.getItem('refreshStartTime');
     const currentTime = new Date().getTime();
     const diff = currentTime - refreshStartTime;
@@ -24,7 +24,7 @@ mappingService.interceptors.request.use(
     try {
       if (diff>=refreshTime && token) {
         const payload={
-        access_token:token
+      token:token
         }
          const res = await axios.put(`${process.env.BASE_URL}/account/regenrate-access-token`,payload)
         if (res.status === 200) {
@@ -34,7 +34,7 @@ mappingService.interceptors.request.use(
       }
     } catch (error) {
       console.error('Error in request interceptor:', error);
-      // window.location.href = '/login'; 
+      // window.location.href="/login"
     }
     return config;
   },

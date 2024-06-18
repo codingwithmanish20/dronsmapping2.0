@@ -6,5 +6,6 @@ export const getAccessToken = () => {
 };
 export const getRefreshToken = () => {
     
-  return Cookies.get('refresh_token');
+  const token =localStorage.getItem('refresh_token')
+  return  token
 };

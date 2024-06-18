@@ -12,19 +12,20 @@ main {
     width: 100%;
 }
 
-.sidebar {
-    height: 100vh;
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 200px;
-    color: #fff;
-    transition: all 0.5s;
-    box-shadow: 0px 0px 1px 0px black;
-    color: white;
+
+#toggle-menu-circle {
+    display: none;
+    transition: display 0.2s ease-in;
+}
+.sidebar-wraper {
+    height: calc(100vh - 70px);
+    padding: 0px 12px ;
     background-color: black;
-    transition: width 0.4s ease-in;
-    overflow: hidden;
+}
+
+.sidebar-container:hover #toggle-menu-circle {
+    display: flex;
+    cursor: pointer;
 }
 
 .top_section {
@@ -44,7 +45,6 @@ main {
     width: 100%;
     height: 90px;
     background-size: cover;
-
 }
 
 .bars {
@@ -59,32 +59,36 @@ main {
 }
 
 .link {
+    
     display: flex;
+    align-items: center;
     color: black;
     font-family: sans-serif;
-    align-items: center;
-    padding: 8px 25px;
-    letter-spacing: 1px;
-    gap: 5px;
+    padding: 6px 8px;
     gap: 6px;
     overflow: hidden;
     cursor: pointer;
+    height: 32px;
+    margin: 4px 0;
+    border-radius: 6px;
+
+}
+.link:hover {
+    background-color: #6b61616a;
+
 }
 
-.link:hover{
-    background-color: #444;
-    transition: all 0.2s;
-    transform: scale(1.1);
-}
-.link:active{
+.link:active {
     transform: scale(0.9999);
 }
+
 .active {
     color: #F05B28;
 }
-.link p{
+
+.link p {
     color: white;
-    margin-bottom: 0px !important;
+  
 }
 
 .Login_Info {

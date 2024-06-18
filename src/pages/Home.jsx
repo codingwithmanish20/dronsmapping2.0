@@ -121,6 +121,7 @@ const Home = () => {
 //     sortedProjects = [...projects].sort((a, b) => {
 //       const dateA = parseISO(a.CreationTimeStep);
 //       console.log("IF Statement A", dateA);
+
 //       const dateB = parseISO(b.CreationTimeStep);
 //       console.log("IF StateMent B", dateB);
 //       return dateA - dateB;
@@ -260,8 +261,8 @@ const handleChange = (event) => {
     <>
       <HomeDashbordHeader />
       <Box className="outer_wraper">
-        <Box className="outer_header">
-          <Box className="outer_left">
+        <Box className="outer_header mr-9 pb-2">
+          <Box className="flex gap-4">
             <TextField
             size="small"
               variant="outlined"
@@ -276,7 +277,7 @@ const handleChange = (event) => {
                 ),
               }}
               className="nameField"
-              style={{ width: "240px", borderRadius: "50px", marginRight: "10px", marginLeft:"40px" }}
+              
             />
           
             <TextField
@@ -294,14 +295,14 @@ const handleChange = (event) => {
                 ),
               }}
               className="nameField"
-              style={{ width: "240px", borderRadius: "50px" }}
+           
             />
           </Box>
 
           <Box className="outer_right">
             <Box className="combo_value"></Box>
-            <FormControl  style={{ width: "230px", marginBottom:"12px", marginRight:"26px" }}>
-              <Select
+            <FormControl  >
+              <Select 
                size="small"
                id="demo-simple-select"
                value={selectedValue}

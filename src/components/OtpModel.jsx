@@ -95,7 +95,8 @@ const OtpModel = () => {
       const res=await api.register.login(payload)
       if(res.status===201){
         setLoading(false)
-        toast('OTP has been send to your registered email.','success')
+        const message=res?.data?.message ||  "Enter otp recieved on mail."
+        toast(message,'success')
 
       }
       
@@ -116,8 +117,8 @@ const OtpModel = () => {
       const res=await api.register.otpVerification(payload)
       if(res.status==200){
         const token = res?.data?.refresh_token?.refresh_token
-        Cookie.set('refresh_token', token)
         localStorage.setItem('refreshStartTime', new Date().getTime());
+        localStorage.setItem('refresh_token',token)
         setLoading(false)
         toast('Logged in successfully.', 'success')
         localStorage.removeItem('auth')
@@ -186,6 +187,7 @@ const OtpModel = () => {
         }
         const res=await api.register.sendResetPasswordOTPEmail(payload)
         if(res.status===201){
+          const message=res?.data?.message
           toast('OTP has been resent to your registered email.','success')
         }
         setLoading(false)

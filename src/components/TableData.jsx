@@ -24,8 +24,6 @@ function TableData() {
         setLoading(true);
       }
     };
-
-
     const timeout = setTimeout(() => {
       setLoading(false);
     }, 5000);

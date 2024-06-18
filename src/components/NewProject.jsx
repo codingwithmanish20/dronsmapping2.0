@@ -164,43 +164,7 @@ const NewProject = () => {
     }
   };
 
-  //  set the location using the drag and drop
-  // useEffect(() => {
-  //   mapboxgl.accessToken =
-  //     'pk.eyJ1IjoicmF3YXRhbW1pZSIsImEiOiJjbG5rNzgzN28wandvMnFwMm1qbWduZ25hIn0.zjWDLv9gL6YI1uIIwPgA7A';
-  //   map.current = new mapboxgl.Map({
-  //     container: mapContainer.current,
-  //     style: 'mapbox://styles/mapbox/streets-v12',
-  //     center: [lng, lat],
-  //     zoom: zoom,
-  //   });
-  //   const zoomControls = new mapboxgl.NavigationControl();
-  //   map.current.addControl(zoomControls, 'top-right');
-  //   marker.current = new mapboxgl.Marker({ color: 'red', draggable: true })
-  //     .setLngLat([lng, lat])
-  //     .addTo(map.current);
-  //   const handleMarkerDragEnd = (e) => {
-  //     const { lng, lat } = e.target.getLngLat();
-  //     setLng(lng);
-  //     setLat(lat);
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       latitude: lat.toString(),
-  //       longitude: lng.toString(),
-  //     }));
-  //     setIsLocationEditable(true);
-  //     getReverseGeocode(lat, lng).then((locationName) => {
-  //       setLocationName(locationName || 'Location not found');
-  //     });
-  //     map.current.setCenter([lng, lat]);
-  //   };
-  //   marker.current.on('dragend', handleMarkerDragEnd);
 
-  //   return () => {
-  //     map.current.remove();
-  //   };
-  // }, []);
-  // set the location to click on the mapBox
 
 
   
@@ -385,6 +349,7 @@ const NewProject = () => {
                   value={formData.description}
                   onChange={handleChange}
                   margin="normal"
+                
                   className="descriptionBox"
                   style={{
                     background: "#1c213e",
@@ -404,6 +369,7 @@ const NewProject = () => {
                   onChange={handleLatitudeChange}
                   disabled
                   className="latitudeInputBox"
+                
                   InputProps={{
                     style: { color: "white" }, // Change input text color
                     
@@ -411,18 +377,9 @@ const NewProject = () => {
                   InputLabelProps={{
                     style: { color: "white" }, // Change label color
                   }}
+                  
+                   helperText="  Drag the marker on the map to set the Latitude*"
                 />
-
-                <span
-                  style={{
-                    color: "#da7785",
-                    marginLeft: "20px",
-                    fontSize: "14px",
-                  }}
-                >
-                  Drag the marker on the map to set the Latitude*
-                </span>
-
                 <TextField
                   // label="Longitude"
                   placeholder="Longitude"
@@ -435,18 +392,8 @@ const NewProject = () => {
                   disabled
                   className={`${formData.longitude !== "" && "latitudeInputBoxFilled"} latitudeInputBox`}
                   InputLabelProps={{ style: { color: "red" } }}
+                  helperText="Drag the marker on the map to set the Longitude*"
                 />
-
-                <span
-                  style={{
-                    color: "#da7785",
-                    marginLeft: "20px",
-                    fontSize: "14px",
-                  }}
-                >
-                  Drag the marker on the map to set the Longitude*
-                </span>
-
                 <TextField
                   // label="Location Name"
                   placeholder="Location Name"
@@ -465,23 +412,13 @@ const NewProject = () => {
                       top: "-4px", // Adjust top position to move the label up or down
                     },
                   }}
+                  helperText="Drag the marker on the map to set the Location Name*"
                 />
 
-                <span
-                  style={{
-                    color: "#da7785",
-                    marginLeft: "20px",
-                    fontSize: "14px",
-                  }}
-                >
-                  Drag the marker on the map to set the Location Name*
-                </span>
-
-                <ToastContainer />
               </form>
                 <div className="btn-box">
-                 
-                
+                  <div className="">
+
                   <Button  
                   onClick={handleSubmit}
                     className="loginBtn"
@@ -497,6 +434,8 @@ const NewProject = () => {
                       "Create New Project"
                     )}
                   </Button>
+                  </div>
+                 
 
                  
                 </div>
