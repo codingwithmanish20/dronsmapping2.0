@@ -18,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { NavLink, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import  Bom from   "../Images/business-corporate-protection-safety-security-concept.jpg"
-
+import api from '../services'
 const Home = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -54,18 +54,17 @@ const Home = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch(
-        "https://res2e4sb2oz6ta7mlagcaelvlm0mpadg.lambda-url.us-west-1.on.aws/dynamodb/all-project-details-of-user",
-        {
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      console.log("dataValue", data)
-      if (response.ok) {
-        setFilteredProjects(data);
-        setProjects(data);
-      } 
+      const response = await api.dashboardApi.getAllProjectList()
+    
+      if(response.status===200){
+        console.log("response",response, response.data.Responses.project)
+        if (response.ok) {
+          // setFilteredProjects(data);
+          // setProjects(data);
+        } 
+      }
+     
+    
     } catch (error) {
       console.log("Error fetching projects:", error);
     } finally {
@@ -272,8 +271,8 @@ const handleChange = (event) => {
       <HomeDashbordHeader />
 
       <Box className="outer_wraper">
-        <Box className="outer_header">
-          <Box className="outer_left">
+        <Box className="outer_header mr-9 pb-2">
+          <Box className="flex gap-4">
             <TextField
             size="small"
               variant="outlined"
@@ -288,7 +287,7 @@ const handleChange = (event) => {
                 ),
               }}
               className="nameField"
-              style={{ width: "240px", borderRadius: "50px", marginRight: "10px", marginLeft:"40px" }}
+              
             />
           
             <TextField
@@ -306,14 +305,14 @@ const handleChange = (event) => {
                 ),
               }}
               className="nameField"
-              style={{ width: "240px", borderRadius: "50px" }}
+           
             />
           </Box>
 
           <Box className="outer_right">
             <Box className="combo_value"></Box>
-            <FormControl  style={{ width: "230px", marginBottom:"12px", marginRight:"26px" }}>
-              <Select
+            <FormControl  >
+              <Select 
                size="small"
                id="demo-simple-select"
                value={selectedValue}

@@ -16,10 +16,10 @@ export const register = {
         return await mappingService.put('/account/auth-login',payload)
     },
     async sendResetPasswordOTPEmail(payload) {
-        return await mappingService.put('/account/reset-passsword/otp',payload)
+        return await mappingService.put('/account/reset-password/otp',payload)
     },
     async resetPassword(payload) {
-        return await mappingService.put('/account/reset-passsword',payload)
+        return await mappingService.put('/account/reset-password',payload)
     },
     async logout() {
         return await mappingService.put('/account/logout')

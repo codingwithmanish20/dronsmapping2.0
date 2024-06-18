@@ -87,6 +87,8 @@ const toast=useToast()
     try {
       const res=await api.register.signup(user)
       if(res.status=201){
+        const message=res?.data?.message
+        toast(message,'success')
         setLoading(false)
       }
       setLoading(false)

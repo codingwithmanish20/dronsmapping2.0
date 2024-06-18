@@ -3,29 +3,27 @@ import React, { useState } from 'react'
 import '../style/sideBar.css'
 import HomeIcon from '@mui/icons-material/Home';
 import DatasetIcon from '@mui/icons-material/Dataset';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import image from "../Images/BotIcon.png"
-import Avatar from '@mui/material/Avatar';
 import LoginInfo from './LoginInfo';
-import ReorderIcon from '@mui/icons-material/Reorder';
-import InfoIcon from '@mui/icons-material/Info';
 import Cookies from 'js-cookie'
 import api from '../services'
 import ConfirmationAlert from '../shared/ConfirmationAlert';
-
-
-
+import logo from '../assets/bl.jfif'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import Tooltip from '@mui/material/Tooltip';
+import { motion } from 'framer-motion';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useLocation } from 'react-router-dom';
 const SideBar = () => {
-
+  
     const [isOpen, setIsOpen] = useState(false);
-    const [isToggle, setIstoggle] = useState(false)
-const [showLogoutConfirmAlert,setShowLogoutConfirmAlert]=useState(false)
+    const [showLogoutConfirmAlert, setShowLogoutConfirmAlert] = useState(false)
+    const location=useLocation()
+    const {pathname}=location
+    
     const toggle = () => {
         setIsOpen(!isOpen)
-        setIstoggle(!isOpen)
     }
 
     const [isModalOpen, setModalOpen] = useState(false);
@@ -58,72 +56,106 @@ const [showLogoutConfirmAlert,setShowLogoutConfirmAlert]=useState(false)
 
     const handleLogout = async () => {
         setShowLogoutConfirmAlert(!showLogoutConfirmAlert)
-        
+
     };
-const handleLogoutConfirm=async()=>{
-    try {
-        const response =await  api.register.logout()
+    const handleLogoutConfirm = async () => {
+        try {
+            const response = await api.register.logout()
 
-        if (response.status===200) {
-            Cookies.remove('refresh_token')
-            localStorage.removeItem('auth')
-            localStorage.removeItem('OtpTitle')
+            if (response.status === 200) {
+                Cookies.remove('refresh_token')
+                localStorage.removeItem('auth')
+                localStorage.removeItem('OtpTitle')
 
-            navigate('/login');
+                navigate('/login');
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
-    } catch (error) {
-        console.error('Error:', error);
-    }
 
-}
+    }
 
     return (
         <>
-            <div className="container">
-                <div className="sidebar" style={{ width: isOpen ? "280px" : "80px", }} >
-                    <div className="top_section">
-                        <ReorderIcon onClick={toggle} style={{ color: "white", fontSize: "18px", padding: "8px 10px", whiteSpace: "nowrap" }} />
-                        <p className='sidebar-logo-title' style={{ display: isOpen ? "block" : "none", color: "white", fontFamily: "sans-serif", whiteSpace: "nowrap",padding: "21px 0px 0px 0px", }}>BotLabDynamics</p>
-                    </div>
-                    {
-                        menuItem?.map((item, index) => {
-                            return (
-                                <>
-                                    <div key={index}>
-                                        <NavLink to={item.path} className='link' style={{ color: "white", whiteSpace: "nowrap" }}>
-                                            <div >{item.icon}</div>
-                                            <div className="link_text" style={{ display: isOpen ? "block" : "none" }} >{item.name}</div>
-                                        </NavLink>
-                                    </div>
-                                </>
-                            )
-                        })
-                    }
-                    <div className='link' style={{display:'flex',alignItems:'center'}}  onClick={handleLogout}>
-                        <ExitToAppIcon style={{color:'white'}} fontSize='12px' />
+            <div className="flex">
+                <motion.div
+                    className="bg-black h-screen sidebar-container relative"
+                    initial={{ width: "60px" }}
+                    animate={{ width: isOpen ? "240px" : "60px" }}
+                    transition={{ duration: 0.5 }}
+                >
 
-                        <p onClick={handleLogout} style={{ display: isOpen ? "block" : "none",fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer" }} >Logout</p>
+                    <div className='px-3 mb-4 h-[60px] flex items-center'>
+
+                        {
+                            !isOpen ? <img width={50} src={logo} alt="" /> : <img src="https://botlabdynamics.com/sites/default/files/2022-11/BL%20Botlab%20Dynamics%20%281%29.png" alt="" />
+                        }
+                    </div>
+                    <div className='relative sidebar-wraper'>
+                        <div id='toggle-menu-circle' onClick={toggle} className='w-[22px]  h-[22px] bg-blue-400 hover:bg-blue-600 rounded-full absolute right-[-10px] !z-50 top-[-10px] flex items-center justify-center text-white'>
+
+                            {
+                                isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />
+                            }
+                        </div>
+
+                        {
+                            menuItem?.map((item, index) => {
+                                return (
+                                    <>
+                                        <div key={index} className='relative'>
+
+                                            <Tooltip title={item.name} placement="right" arrow>
+                                                <NavLink to={item.path} className={`link ${pathname===item.path?'bg-[#6b61616a]':''}`} style={{ color: "white", whiteSpace: "nowrap" }}>
+                                                    <div >{item.icon}</div>
+                                                    <div className="link_text" style={{ display: isOpen ? "block" : "none" }} >{item.name}</div>
+                                                </NavLink>
+
+                                            </Tooltip>
+                                        </div>
+                                    </>
+                                )
+                            })
+                        }
+                        <Tooltip title={"User Info"} placement="right" arrow>
+
+                            <div className='link'>
+                                <AccountCircleIcon
+                                    onClick={handleAvatarClick}
+                                    style={{
+                                        color: 'white',
+                                        fontSize: '18px',
+                                        cursor: "pointer"
+                                    }}
+
+                                />
+                                <p onClick={handleAvatarClick} style={{ display: isOpen ? "block" : "none", marginTop: "2px", fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer", whiteSpace: "nowrap" }}>User Info</p>
+                            </div>
+
+                        </Tooltip>
+                        <div className='flex items-center w-full left-0  absolute bottom-0 h-[60px]  border-t border-gray-500 overflow-hidden  '>
+                            <div className='px-3 w-full'>
+                            <Tooltip title={"Logout"} placement="right" arrow>
+
+                                <div className='link w-full' onClick={handleLogout}>
+                                    <ExitToAppIcon style={{ color: 'white' }} fontSize='12px' />
+                                    <p onClick={handleLogout} style={{ display: isOpen ? "block" : "none", fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer" }} >Logout</p>
+
+                                </div>
+
+                            </Tooltip>
+
+                            </div>
+                        </div>
 
                     </div>
-                    <div className='link'>
-                        <InfoIcon
-                            onClick={handleAvatarClick}
-                            style={{
-                                color: 'white',
-                                fontSize: '18px',
-                                cursor: "pointer"
-                            }}
 
-                        />
-                        <p onClick={handleAvatarClick} style={{ display: isOpen ? "block" : "none", marginTop: "2px", fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer",whiteSpace: "nowrap" }}>User Info</p>
-                    </div>
-                   
                     <LoginInfo open={isModalOpen} onClose={handleCloseModal} />
-                </div>
+                </motion.div>
                 <main><Outlet /></main>
             </div>
 
-            <ConfirmationAlert message={"Are you sure you want to logout?"} open={showLogoutConfirmAlert} onConfirm={handleLogoutConfirm} onClose={()=>setShowLogoutConfirmAlert(!showLogoutConfirmAlert)} />
+            <ConfirmationAlert message={"Are you sure you want to logout?"} open={showLogoutConfirmAlert} onConfirm={handleLogoutConfirm} onClose={() => setShowLogoutConfirmAlert(!showLogoutConfirmAlert)} />
         </>
     )
 }
