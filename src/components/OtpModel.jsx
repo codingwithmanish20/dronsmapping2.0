@@ -119,7 +119,7 @@ const OtpModel = () => {
       if(res.status==200){
         const token = res?.data?.refresh_token?.refresh_token
         localStorage.setItem('refresh_token',token)
-        // startTokenRefreshInterval()
+        startTokenRefreshInterval()
         setLoading(false)
         toast('Logged in successfully.', 'success')
         localStorage.removeItem('auth')

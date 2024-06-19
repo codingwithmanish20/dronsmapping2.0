@@ -20,6 +20,7 @@ import moment from 'moment';
 import  Bom from   "../Images/business-corporate-protection-safety-security-concept.jpg"
 import api from '../services'
 import { startTokenRefreshInterval } from "../helper/refreshToken";
+import { sortProjectsByDate } from "../helper/sortProjectsByDate";
 
 
 
@@ -62,9 +63,10 @@ const Home = () => {
       const response = await api.dashboardApi.getAllProjectstList()
     
       if (response.status===200) {
-        const data=response?.data
+        const data= sortProjectsByDate(response?.data,1)
         console.log("data", data)
         if(Array.isArray(data)){
+          
           setFilteredProjects(data);
           setProjects(data);
 
@@ -155,34 +157,12 @@ const Home = () => {
 
 
 const handleChange = (event) => {
-  const value = event.target.value;
+  const value = Number(event.target.value);
   setSelectedValue(value);
+console.log('value',value)
+  let sortedProjects=sortProjectsByDate(projects,value)
 
-  let sortedProjects;
-
-  console.log('Original Projects:', projects);
-
-  if (value === '0') {
-    sortedProjects = [...projects].sort((a, b) => {
-      const dateA = parseISO(a.CreationTimeStep);
-      console.log("IF Statement A", dateA);
-      const dateB = parseISO(b.CreationTimeStep);
-      console.log("IF StateMent B", dateB);
-      const finaldata = dateA - dateB;
-      console.log("finaldata", finaldata)
-      return finaldata
-    });
-  } else {
-    sortedProjects = [...projects].sort((a, b) => {
-      const dateA = parseISO(a.CreationTimeStep);
-      console.log("Else date A", dateA);
-      const dateB = parseISO(b.CreationTimeStep);
-      console.log("else Data B", dateB);
-      return dateB - dateA;
-    });
-  }
-
-  console.log('Sorted Projects:', sortedProjects);
+  console.log('sortedProjects:', sortedProjects)
 
   setFilteredProjects(sortedProjects);
 };
@@ -264,7 +244,18 @@ const handleChange = (event) => {
     markers.current.forEach((marker) => marker.remove());
     markers.current = [];
   };
-  console.log('filteredProjects',filteredProjects)
+
+
+  const handleDeactivateProject=async()=>{
+    try {
+  const res=await api.user.deactiveProject()
+      
+    } catch (error) {
+      console.error('Error::whle calling deactivate project api',error)
+      
+    }
+
+  }
 
   return (
     <>
@@ -317,7 +308,7 @@ const handleChange = (event) => {
                value={selectedValue}
                onChange={handleChange}
               >
-                <MenuItem value="0">  
+                <MenuItem value="1">  
                 </MenuItem>
                 <MenuItem value="0">Sort By Asc Date</MenuItem>
                 <MenuItem value="1">Sort By Desc Date</MenuItem>
@@ -354,8 +345,8 @@ const handleChange = (event) => {
                   
                     >
                       <div className="card-content-wrapper">
-                        <h5 style={{fontWeight:"900"}}>Project Name : {project.project_name}</h5>
-                        <h5 style={{fontWeight:"900"}}>Project Category : {project.category}</h5>
+                        <h5><span className="text-white">Project Name : </span>{project.project_name}</h5>
+                        <h5><span className="text-white">Project Category :</span> {project.category}</h5>
                       </div>
                     </div>
                   ))

@@ -1,4 +1,5 @@
 import { register } from "./register";
 import { dashboardApi } from "./dashboardApi";
-const modulesList={ register,dashboardApi }
+import {user} from "./userProject"
+const modulesList={ register,dashboardApi,user }
 export default  modulesList

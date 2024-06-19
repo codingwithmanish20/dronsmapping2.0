@@ -17,6 +17,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/newproject.css";
 import api from '../services'
+import Loading from "../shared/Loading";
 const NewProject = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -130,10 +131,7 @@ const NewProject = () => {
       const response = await api.dashboardApi.addProject(formData)
       if (response.status==201) {
       toast.success("Project added successfully");
-        setTimeout(() => {
         navigate("/");
-        }, 6000);
-
         // Reset all form fields
         setFormData({
           project_name: "",
@@ -246,7 +244,7 @@ const NewProject = () => {
     marginLeft: "50px",
     marginTop: "-10px",
   };
-  const isDisabled=!formData.name || !formData.category
+  const isDisabled=!formData.name || !formData.category || !formData.latitude || !formData.longitude
 
   return (
     <>
@@ -461,6 +459,7 @@ const NewProject = () => {
           </Grid>
         </Grid>
       </div>
+      <Loading  isVisible={loading}/>
     </>
   );
 };
