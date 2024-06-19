@@ -1,11 +1,10 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../style/sideBar.css'
 import HomeIcon from '@mui/icons-material/Home';
 import DatasetIcon from '@mui/icons-material/Dataset';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LoginInfo from './LoginInfo';
-import Cookies from 'js-cookie'
 import api from '../services'
 import ConfirmationAlert from '../shared/ConfirmationAlert';
 import logo from '../assets/bl.jfif'
@@ -15,13 +14,17 @@ import Tooltip from '@mui/material/Tooltip';
 import { motion } from 'framer-motion';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLocation } from 'react-router-dom';
+import { getUserdetails } from '../helper/user';
 const SideBar = () => {
-  
+
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
     const [showLogoutConfirmAlert, setShowLogoutConfirmAlert] = useState(false)
-    const location=useLocation()
-    const {pathname}=location
-    
+    const [user, setUser] = useState(null)
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { pathname } = location
+
     const toggle = () => {
         setIsOpen(!isOpen)
     }
@@ -47,33 +50,41 @@ const SideBar = () => {
             name: "Data Processing",
             icon: <DatasetIcon style={{ fontSize: "18px" }} />
         },
-
-
     ]
-
-
-    const navigate = useNavigate()
+    useEffect(() => {
+        const user = getUserdetails()
+        if (user) {
+            setUser(user)
+        }
+    }, [])
 
     const handleLogout = async () => {
         setShowLogoutConfirmAlert(!showLogoutConfirmAlert)
 
     };
     const handleLogoutConfirm = async () => {
+        setIsLoading(true)
         try {
             const response = await api.register.logout()
 
             if (response.status === 200) {
-                Cookies.remove('refresh_token')
+                setIsLoading(false)
                 localStorage.removeItem('auth')
+                localStorage.removeItem('auth-user')
                 localStorage.removeItem('OtpTitle')
-
+                localStorage.removeItem('refresh_token')
                 navigate('/login');
             }
         } catch (error) {
             console.error('Error:', error);
+            setIsLoading(false)
+            setShowLogoutConfirmAlert(false)
         }
 
+
     }
+
+  
 
     return (
         <>
@@ -88,7 +99,7 @@ const SideBar = () => {
                     <div className='px-3 mb-4 h-[60px] flex items-center'>
 
                         {
-                            !isOpen ? <img width={50} src={logo} alt="" /> : <img src="https://botlabdynamics.com/sites/default/files/2022-11/BL%20Botlab%20Dynamics%20%281%29.png" alt="" />
+                            !isOpen ? <img key="logo-image" width={50} src={logo} alt="" /> : <img src="https://botlabdynamics.com/sites/default/files/2022-11/BL%20Botlab%20Dynamics%20%281%29.png" alt="" />
                         }
                     </div>
                     <div className='relative sidebar-wraper'>
@@ -106,7 +117,7 @@ const SideBar = () => {
                                         <div key={index} className='relative'>
 
                                             <Tooltip title={item.name} placement="right" arrow>
-                                                <NavLink to={item.path} className={`link ${pathname===item.path?'bg-[#6b61616a]':''}`} style={{ color: "white", whiteSpace: "nowrap" }}>
+                                                <NavLink to={item.path} className={`link ${pathname === item.path ? 'bg-[#6b61616a]' : ''}`} style={{ color: "white", whiteSpace: "nowrap" }}>
                                                     <div >{item.icon}</div>
                                                     <div className="link_text" style={{ display: isOpen ? "block" : "none" }} >{item.name}</div>
                                                 </NavLink>
@@ -135,27 +146,27 @@ const SideBar = () => {
                         </Tooltip>
                         <div className='flex items-center w-full left-0  absolute bottom-0 h-[60px]  border-t border-gray-500 overflow-hidden  '>
                             <div className='px-3 w-full'>
-                            <Tooltip title={"Logout"} placement="right" arrow>
+                                <Tooltip title={"Logout"} placement="right" arrow>
 
-                                <div className='link w-full' onClick={handleLogout}>
-                                    <ExitToAppIcon style={{ color: 'white' }} fontSize='12px' />
-                                    <p onClick={handleLogout} style={{ display: isOpen ? "block" : "none", fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer" }} >Logout</p>
+                                    <div className='link w-full' onClick={handleLogout}>
+                                        <ExitToAppIcon style={{ color: 'white' }} fontSize='12px' />
+                                        <p onClick={handleLogout} style={{ display: isOpen ? "block" : "none", fontSize: "13px", fontFamily: " sans-serif", cursor: "pointer" }} >Logout</p>
 
-                                </div>
+                                    </div>
 
-                            </Tooltip>
+                                </Tooltip>
 
                             </div>
                         </div>
 
                     </div>
 
-                    <LoginInfo open={isModalOpen} onClose={handleCloseModal} />
+                    <LoginInfo user={user} open={isModalOpen} onClose={handleCloseModal} />
                 </motion.div>
                 <main><Outlet /></main>
             </div>
 
-            <ConfirmationAlert message={"Are you sure you want to logout?"} open={showLogoutConfirmAlert} onConfirm={handleLogoutConfirm} onClose={() => setShowLogoutConfirmAlert(!showLogoutConfirmAlert)} />
+            <ConfirmationAlert isLoading={isLoading} message={"Are you sure you want to logout?"} open={showLogoutConfirmAlert} onConfirm={handleLogoutConfirm} onClose={() => setShowLogoutConfirmAlert(!showLogoutConfirmAlert)} />
         </>
     )
 }

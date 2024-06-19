@@ -19,6 +19,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import  Bom from   "../Images/business-corporate-protection-safety-security-concept.jpg"
 import api from '../services'
+import { startTokenRefreshInterval } from "../helper/refreshToken";
 
 
 
@@ -53,14 +54,21 @@ const Home = () => {
 
 
   const fetchProjects = async () => {
+    // startTokenRefreshInterval()
+    
+
     try {
+
       const response = await api.dashboardApi.getAllProjectstList()
     
       if (response.status===200) {
         const data=response?.data
         console.log("data", data)
-        setFilteredProjects(data);
-        setProjects(data);
+        if(Array.isArray(data)){
+          setFilteredProjects(data);
+          setProjects(data);
+
+        }
         setLoading(false);
       } 
     } catch (error) {
@@ -211,8 +219,8 @@ const handleChange = (event) => {
 
     const filteredProjects = projects.filter(
       (project) =>
-        project.ProjectName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.Category.toLowerCase().includes(searchTerm.toLowerCase())
+        project?.project_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project?.category.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setFilteredProjects(filteredProjects);
@@ -227,7 +235,7 @@ const handleChange = (event) => {
     setSearchCategory(category);
 
     const filteredProjectsByCategory = projects.filter(
-      (project) => project.Category.toLowerCase().includes(category.toLowerCase())
+      (project) => project.category.toLowerCase().includes(category.toLowerCase())
     );
 
     setFilteredProjects(filteredProjectsByCategory);
@@ -256,6 +264,7 @@ const handleChange = (event) => {
     markers.current.forEach((marker) => marker.remove());
     markers.current = [];
   };
+  console.log('filteredProjects',filteredProjects)
 
   return (
     <>
@@ -310,6 +319,7 @@ const handleChange = (event) => {
               >
                 <MenuItem value="0">  
                 </MenuItem>
+                <MenuItem value="0">Sort By Asc Date</MenuItem>
                 <MenuItem value="1">Sort By Desc Date</MenuItem>
               </Select>
             </FormControl>
@@ -323,7 +333,7 @@ const handleChange = (event) => {
                 {loading ? (
                   <CircularProgress style={{ marginTop: "10rem" }} />
                 ) : filteredProjects?.length === 0 ? (
-                  <h3 style={{ marginTop: "10rem" }}>
+                  <h3 style={{ marginTop: "10rem" }} className="font-semibold text-gray-400">
                     No projects available for this name or category.
                   </h3>
                 ) : (
@@ -335,8 +345,8 @@ const handleChange = (event) => {
                       onMouseEnter={() =>
                         handleMouseEnter(
                           project.project_id,
-                          project.Latitude,
-                          project.Longitude
+                          project.latitude,
+                          project.longitude
                         )
                       }
                       onMouseLeave={handleMouseLeave}
@@ -344,8 +354,8 @@ const handleChange = (event) => {
                   
                     >
                       <div className="card-content-wrapper">
-                        <h5 style={{fontWeight:"900"}}>ProjectName : {project.project_name}</h5>
-                        <h5 style={{fontWeight:"900"}}>ProjectCategory : {project.category}</h5>
+                        <h5 style={{fontWeight:"900"}}>Project Name : {project.project_name}</h5>
+                        <h5 style={{fontWeight:"900"}}>Project Category : {project.category}</h5>
                       </div>
                     </div>
                   ))

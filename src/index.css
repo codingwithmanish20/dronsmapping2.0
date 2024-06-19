@@ -59,3 +59,16 @@ h1,h2,h3,h4,h5,h6,p{
   background-color: #555555; /* Color of the scrollbar thumb on hover */
 }
 
+.loading-screen-logo{
+animation: animate 2s ease-in-out infinite;
+}
+
+@keyframes animate {
+  0%{
+    opacity: 0.3;
+  }
+  100%{
+    opacity: 1;
+  }
+  
+}

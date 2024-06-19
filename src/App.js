@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Routes,
   Route,
-  Navigate,
-  useLocation,
-  useNavigate,
 } from "react-router-dom";
 import Home from "./pages/Home";
 import Dataprocessing from "./pages/Dataprocessing";
@@ -18,23 +15,35 @@ import UploadDataProcessing from "./components/UploadDataProcessing";
 import ForgetPassword from "./components/ForgetPassword";
 import NewSignUp from "./components/NewSignUp";
 import OtpModel from "./components/OtpModel";
+import LoadingScreen from "./components/LoadingScreen";
+import api from './services'
 const App = () => {
-  const [isSignedIn, setIsSignedIn] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [isLogIn, setIsLogIn] = useState(true);
-  const location = useLocation();
+  const getUserProfile = async () => {
+    setLoading(true)
+    try {
+      const res = await api.dashboardApi.getUserProfile()
+      if (res.status === 200) {
+        console.log('use profile response',res.data)
+        localStorage.setItem("auth-user", JSON.stringify(res.data))
+        setLoading(false)
+      }
+    } catch (error) {
+      console.error('Error while calling user data')
+      setLoading(false)
+      localStorage.removeItem("auth-user")
 
-  const isLoginPage = location.pathname == "/Login";
-  const isHomePage = location.pathname == "/";
-  
-  const navigate = useNavigate();
-  const handleSignIn = () => {
-    setIsSignedIn(true);
-  };
+    }
+  }
 
-  const handleSignOut = () => {
-    setIsSignedIn(false);
-  };
-  
+  useEffect(() => {
+    getUserProfile()
+    console.log('app run')
+  }, [])
+
+  if (loading) return <LoadingScreen />
+
 
   return (
     <Routes>
@@ -44,6 +53,7 @@ const App = () => {
       <Route path="/ForgetPassword" element={<ForgetPassword />} />
       <Route path="/otp" element={<OtpModel />} />
       <Route path="/uploadDataProcessing" element={<UploadDataProcessing />} />
+      
       <Route path="/" element={<SideBar />}>
         <Route
           path="/"
@@ -68,7 +78,7 @@ const App = () => {
               <Dataprocessing />
             </ProtectedRoute>
           }
-        />  
+        />
         <Route
           path="/dashbord"
           element={

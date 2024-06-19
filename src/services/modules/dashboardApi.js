@@ -9,5 +9,8 @@ export const dashboardApi={
     },
     async getAllProjectstList(){
         return  await mappingService.get('/project/my-projects')
+    },
+    async getUserProfile(){
+        return  await mappingService.get('/user/me')
     }
 }

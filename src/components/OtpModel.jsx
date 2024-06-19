@@ -10,6 +10,7 @@ import api from '../services'
 import { errorHandler } from "../helper/handleError";
 import useToast from "../hooks/useToast";
 import Loading from "../shared/Loading";
+import { startTokenRefreshInterval } from "../helper/refreshToken";
 const OtpModel = () => {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
@@ -117,12 +118,12 @@ const OtpModel = () => {
       const res=await api.register.otpVerification(payload)
       if(res.status==200){
         const token = res?.data?.refresh_token?.refresh_token
-        localStorage.setItem('refreshStartTime', new Date().getTime());
         localStorage.setItem('refresh_token',token)
+        // startTokenRefreshInterval()
         setLoading(false)
         toast('Logged in successfully.', 'success')
         localStorage.removeItem('auth')
-        navigate('/')
+        window.location.href="/"
         setLoading(false)
       }
       

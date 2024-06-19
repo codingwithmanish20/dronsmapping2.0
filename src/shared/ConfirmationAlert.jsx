@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-
+import CircularProgress from "@mui/material/CircularProgress";
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -18,7 +18,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function ConfirmationAlert({open,message,onClose,onConfirm}) {
+export default function ConfirmationAlert({open,message,onClose,onConfirm,isLoading}) {
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -52,7 +52,11 @@ export default function ConfirmationAlert({open,message,onClose,onConfirm}) {
           <Button size='small' autoFocus onClick={onClose} variant='outlined'>
             Cancel
           </Button>
-          <Button size='small' variant='contained' autoFocus onClick={onConfirm} className='loginBtn'>
+          <Button size='small'  disabled={isLoading} variant='contained' autoFocus onClick={onConfirm} className='loginBtn'>
+            {
+              isLoading &&  <CircularProgress size={18}  />
+            }
+           
             Yes
           </Button>
         </DialogActions>

@@ -8,11 +8,7 @@ import SendIcon from '@mui/icons-material/Send';
 import info from '../Images/user1.png';
 import '../style/logindetails.css';
 
-const LoginInfo = ({ open, onClose }) => {
-  const userEmail = localStorage.getItem('userEmail');
-  const userPassword = localStorage.getItem('userPassword');
-  const navigate = useNavigate();
-
+const LoginInfo = ({user, open, onClose }) => {
   return (
     <Modal
       open={open}
@@ -52,39 +48,17 @@ const LoginInfo = ({ open, onClose }) => {
             <Typography variant="h5" className="user_info1" sx={{ marginBottom: '20px' }}>
               User Info
             </Typography>
-            {userEmail && userPassword ? (
-              <div>
-                <TextField
-                  label="Email"
-                  variant="standard"
-                  value={userEmail}
-                  InputProps={{
-                    readOnly: true,
-                    style: { width: '500px', borderBottom: '1px solid white', color:"white" },
-                  }}
-                  InputLabelProps={{
-                    style: { color: 'white' },
-        
-                  }}
-                />
-                <br />
-                <br />
-                <TextField
-                  label="Password"
-                  value={userPassword}
-                  variant="standard"
-                  type="password"
-                  fullWidth
-                  InputProps={{
-                    readOnly: true,
-                    style: { width: '500px',borderBottom: '1px solid white', color:"white", },
-                  }}
-                  InputLabelProps={{
-                    style: { color: 'white' },
-                  }}
-                />
-                <br />
-                <br />
+            {user!==null ? (
+              <div className='px-4  text-white'>
+                <div className='flex items-center gap-2'>
+                <label>Name:</label>
+                <p>{user?.name}</p>
+                </div>
+                <div className='flex items-center gap-2'>
+                <label>Email:</label>
+                <p>{user?.email}</p>
+                </div>
+                
                
               </div>
             ) : (

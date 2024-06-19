@@ -6,11 +6,7 @@ const Loading = ({isVisible}) => {
 
   return (
     <div className='loading'>
-    <div>
       <CircularProgress />
-      
-
-    </div>
     </div>
   )
 }

@@ -246,7 +246,7 @@ const NewProject = () => {
     marginLeft: "50px",
     marginTop: "-10px",
   };
-  const isDisabled=!formData.project_name || !formData.category
+  const isDisabled=!formData.name || !formData.category
 
   return (
     <>
@@ -295,7 +295,7 @@ const NewProject = () => {
                   variant="outlined"
                   fullWidth
                   required
-                  name="project_name"
+                  name="name"
                   placeholder="Project Name"
                   value={formData.project_name}
                   onChange={handleChange}
