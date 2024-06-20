@@ -30,5 +30,9 @@ export const register = {
         }
         return await mappingService.put('/account/regenrate-access-token', payload)
     },
+    async verifyTurnstile(secretKey,token){
+        const payload=`secret=${secretKey}&response=${token}`
+        return await mappingService.post("https://challenges.cloudflare.com/turnstile/v0/siteverify",payload)
+    }
 
 }

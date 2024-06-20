@@ -158,8 +158,8 @@ const Home = () => {
 
 const handleChange = (event) => {
   const value = Number(event.target.value);
+  console.log('value change sort',value)
   setSelectedValue(value);
-console.log('value',value)
   let sortedProjects=sortProjectsByDate(projects,value)
 
   console.log('sortedProjects:', sortedProjects)
@@ -277,9 +277,7 @@ console.log('value',value)
                 ),
               }}
               className="nameField"
-              
             />
-          
             <TextField
               variant="outlined"
               size="small"

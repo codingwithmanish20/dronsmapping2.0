@@ -8,11 +8,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/system";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
-import ReCAPTCHA from "react-google-recaptcha";
+import Turnstile, { useTurnstile } from "react-turnstile";
 import "../style/login.css";
 import  api from '../services'
 import useToast from "../hooks/useToast";
-import Turnstile, { useTurnstile } from "react-turnstile";
+// import { Turnstile } from '@marsidev/react-turnstile'
 import { errorHandler } from "../helper/handleError";
 
 // site key in the HTML code your site serves to users. =>  6Lfk-dEpAAAAAFKRUVL3DOCB3gjiX3Ib5PQ7XPoX
@@ -100,7 +100,25 @@ const toast=useToast()
       
     }
   }
-  const handleVerify=(token)=>{
+  const handleVerify=async(token)=>{
+    console.log('verified',token)
+    const SECRET_KEY="0x4AAAAAAAc19MLJ4z2_D4v-oDvm2R_Gv1o"
+    try {
+      // const res=await api.register.verifyTurnstile(secretkey,token)
+      // console.log('transtile res',res)
+      const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `secret=${SECRET_KEY}&response=${token}`,
+      });
+      
+    } catch (error) {
+      console.error("Error::",error)
+      
+    }
+    
 
   }
   return (
@@ -186,15 +204,19 @@ const toast=useToast()
             className="loginField"
           />
           <div className="">
-             {/* <Turnstile
-      sitekey="0x4AAAAAAAcTdSshsdxFuz_f"
+             <Turnstile
+             className="mb-4 !w-full !rounded-lg" 
+        // executution="execute"
+        // appearance="always"
+      sitekey="0x4AAAAAAAc19PLhfHqn4C6y"
       onVerify={handleVerify}
-    /> */}
+      
+    />
           </div>
           <Button
             variant="contained"
             fullWidth
-            className="loginBtn"
+            className="loginBtn mt-4"
             onClick={handleSubmit}
             disabled={isDisabled || loading}
           >
