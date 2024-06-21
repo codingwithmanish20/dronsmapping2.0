@@ -17,9 +17,6 @@ export function sortProjectsByDate(projects, sortOrder) {
   newsortedProject= sortedProjects.sort((a, b) => {
     const dateA = parseCustomDate(a.created_at);
     const dateB = parseCustomDate(b.created_at);
-    console.log('dateA',dateA,a)
-    console.log('dateB',dateB)
-
     if (sortOrder === 0) {
       // Ascending order
       return dateA - dateB;

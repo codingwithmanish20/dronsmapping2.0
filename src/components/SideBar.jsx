@@ -15,6 +15,7 @@ import { motion } from 'framer-motion';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useLocation } from 'react-router-dom';
 import { getUserdetails } from '../helper/user';
+import { stopTokenRefreshInterval } from '../helper/refreshToken';
 const SideBar = () => {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -73,6 +74,7 @@ const SideBar = () => {
                 localStorage.removeItem('auth-user')
                 localStorage.removeItem('OtpTitle')
                 localStorage.removeItem('refresh_token')
+                stopTokenRefreshInterval()
                 navigate('/login');
             }
         } catch (error) {

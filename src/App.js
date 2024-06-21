@@ -17,6 +17,7 @@ import NewSignUp from "./components/NewSignUp";
 import OtpModel from "./components/OtpModel";
 import LoadingScreen from "./components/LoadingScreen";
 import api from './services'
+import { startTokenRefreshInterval } from "./helper/refreshToken";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isLogIn, setIsLogIn] = useState(true);
@@ -26,6 +27,9 @@ const App = () => {
       const res = await api.dashboardApi.getUserProfile()
       if (res.status === 200) {
         console.log('use profile response',res.data)
+        if(!localStorage.getItem('intervalId')){
+          startTokenRefreshInterval()
+        }
         localStorage.setItem("auth-user", JSON.stringify(res.data))
         setLoading(false)
       }
