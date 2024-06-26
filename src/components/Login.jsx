@@ -13,6 +13,8 @@ import { errorHandler } from "../helper/handleError";
 import "../style/login.css";
 import api from '../services'
 import Loading from "../shared/Loading";
+import PasswordControl from "./ui/PasswordControl";
+import InputControl from "./ui/InutControl";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,10 +25,6 @@ const Login = () => {
   const [isFocused, setIsFocused] = useState(false);
 const toast=useToast()
 
-  const StyledIconButton = styled(IconButton)({
-    color: "white",     
-  });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'email') {
@@ -36,24 +34,9 @@ const toast=useToast()
     }
   };
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);  
-  };
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
 
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     setLoading(true);
     try {
       const res=await api.register.login({email,password})
@@ -72,86 +55,48 @@ const toast=useToast()
       
     }
   };
+  const handleKeyDown=(e)=>{
+    if(e.key=="Enter"){
+      handleLogin()
+
+    }
+  }
 
   const isDisabled = !email || !password;
 
   return (
     <Box className="main-login">
-      <Box className="login-form">
-        <div className="logInLogo">
-          <img src={Logo} alt="" height={20}/>
+      <Box className="border-2 rounded-sm px-8 pt-8 pb-12 w-[440px]">
+        <div className="logInLogo flex justify-center">
+          <img src={Logo} alt="" width={200} />
         </div>
-        <h2 style={{ fontFamily: "sans-serif", fontWeight: 700 }}>Login</h2>
+        <h2 className="text-2xl font-semibold">Login</h2>
         <p
-          style={{
-            color: "gray",
-            fontWeight: 500,
-            fontFamily: "sans-serif",
-            marginTop: "14px",
-            marginBottom: "40px",
-            fontSize: "13px",
-          }}
+         className="text-muted mt-4 mb-12 text-sm"
         >
           Enter your Credentials to access your account
         </p>
-        <TextField
-        placeholder="Email"
-          type="email"
-          name="email" 
-          value={email}
-          onChange={handleChange}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          className="loginField"
-        />
-        <TextField   
-          placeholder="Password"
-          type={showPassword ? "text" : "password"}
-          name="password" 
-          value={password}
-          onChange={handleChange}
-          variant="outlined"
-          fullWidth
-          autoComplete="off"
-          margin="normal"
-          // InputLabelProps={{
-          
-          //   shrink: true,
-          // }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end" className="loginField"          >
-                {isFocused && (
-                  <StyledIconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </StyledIconButton>
-                )}
-              </InputAdornment>
-            ),
-          }}
-
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          className="loginField"          
-        />
+ 
+        <div>
+          <div className="space-y-4">
+            <InputControl name={"email"} onChange={handleChange} placeholder={"Email"} />
+          <PasswordControl name={"password"} key={"password"} value={password} onChange={handleChange} onkeydown={handleKeyDown}  />
+          </div>
+        <div className="flex justify-end mt-1">
         <NavLink
-          to="/ForgetPassword"
-          style={{ textAlign: "right", display: "block", margin: "10px"}}
-          className="forgotpassword"
+          to="/password-reset/request"
+          className="text-sm !text-softBlue"
         >
           Forgot Password?
         </NavLink>
+          
+        </div>
+
+        </div>
         <Button
           variant="contained"
           fullWidth
-          className="loginBtn"
+          className="loginBtn !mt-4"
           onClick={handleLogin}
           disabled={isDisabled || loading}  
         >
@@ -162,16 +107,7 @@ const toast=useToast()
                     )}
         </Button>
         <p
-          style={{
-            marginBottom: "40px",
-            fontFamily: "sans-serif",
-            fontSize: "12px",
-            color: "gray",
-            fontWeight: 500,
-            textAlign: "center",
-            display: "block",
-            marginTop: "20px",
-          }}
+          className="text-muted text-sm mt-1 ms-2 text-xs"
         >
           Not Registered Yet ?{" "}
           <NavLink
@@ -179,7 +115,7 @@ const toast=useToast()
           style={{ textDecoration: "none", fontWeight: 700 }}
           className="forgotpassword"
         >
-          Sign Up Now ?
+        <span className="text-softBlue">  Sign Up Now ?</span>
         </NavLink>
              
         </p>

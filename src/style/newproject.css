@@ -91,15 +91,13 @@ box-shadow: 0 0 10px rgba(0,0,0,0.1);
     font-weight: 400;
 }
 
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:invalid{
-  color: white !important;
-}
+
 
 .NewBtn.css-1fu7jd5-MuiButtonBase-root-MuiButton-root{
   background-color: black !important;
   color: white !important;
   border-radius: 45px !important;
-  height: 45px !important;
+  height: 40px !important;
   /* margin-top: 30px !important; */
 }
 .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root{

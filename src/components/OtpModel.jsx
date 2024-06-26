@@ -39,6 +39,10 @@ const OtpModel = () => {
   const handleOtpChange = (otp) => {
     const numericValue = otp.replace(/\D/g, "");
     setOtp(numericValue);
+    if (otp.length === 6) {
+      loginOtpVerifycation()
+     
+    }
   };
 
   const forgetPassword = async () => {
@@ -137,9 +141,7 @@ const OtpModel = () => {
   }
   const handleVerify = async () => {
     setLoading(true)
-   
       try {
-        console.log('OtpTitle',OtpTitle)
         if (OtpTitle === "Forget") {
           forgetPassword()
         }else if (OtpTitle==="Login"){
@@ -213,7 +215,7 @@ const OtpModel = () => {
           style={{ marginBottom: "30px", width: "80%" }}
         />
         <h1 style={{ marginLeft: "-317px" }}>{OtpTitle}</h1>
-        <p>Please enter the OTP sent to your registered email ID.</p>
+        <p className="text-muted mb-8">Please enter the OTP sent to your registered email ID.</p>
         <OTPInput
           value={otp}
           onChange={handleOtpChange}
@@ -223,15 +225,12 @@ const OtpModel = () => {
           renderInput={(props) => <input {...props} />}
         />
         <Box mt={4}>
-
           <Button
             variant="contained"
             fullWidth
             className="loginBtn"
             onClick={handleVerify}
             disabled={isDisabled || loading}
-
-
           >
             {loading ? (
               <CircularProgress size={'1.3rem'} style={{ color: "white" }} />
@@ -241,9 +240,9 @@ const OtpModel = () => {
           </Button>
         </Box>
 
-        <div className="timer-container">
+        <div className="flex justify-between mt-2 px-3">
           <p style={{ fontSize: "12px" }}>Remaining time: 00:{time}s</p>
-          <p   onClick={disabledResend ? null : handleResend}  style={{ fontSize: "12px" }}>
+          <p onClick={disabledResend ? null : handleResend}  style={{ fontSize: "12px" }}>
             Don't get the code? <span className={`resend-link ${disabledResend ? 'disabled' : ''}`}>Resend</span>{" "}
           </p>
         </div>

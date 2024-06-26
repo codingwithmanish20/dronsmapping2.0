@@ -12,6 +12,7 @@ body{
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  font-family: "Roboto", sans-serif !important;
 }
 h1,h2,h3,h4,h5,h6,p{
   margin: 0;
@@ -28,7 +29,7 @@ h1,h2,h3,h4,h5,h6,p{
   background-color: black;
 }
 .loading{
-  background: rgba(255,255,255,0.1);
+  /* background: rgba(255,255,255,0.1); */
   position: absolute;
   width: 100%;
   height: 100%;
@@ -37,6 +38,8 @@ h1,h2,h3,h4,h5,h6,p{
   justify-content: center;
   backdrop-filter: blur(5px);
   z-index: 999;
+  top: 0;
+  left: 0;
 }
 
 
@@ -47,22 +50,28 @@ h1,h2,h3,h4,h5,h6,p{
 ::-webkit-scrollbar-track {
   background: #1c213e; /* Background of the scrollbar track */
   border-radius: 10px;
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #1a0dc9; /* Color of the scrollbar thumb */
+  background-color: #f3eded; /* Color of the scrollbar thumb */
   border-radius: 10px; /* Rounded corners */
-  border: 2px solid #1d1d1d; /* Space around the thumb */
+  border: 1px solid #d2cdd8; /* Space around the thumb */
+
 }
 
+
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #555555; /* Color of the scrollbar thumb on hover */
+  background-color: #e2e2e2; /* Color of the scrollbar thumb on hover */
 }
 
 .loading-screen-logo{
 animation: animate 2s ease-in-out infinite;
 }
 
+.disabled{
+  color: #E7E7E7;
+}
 @keyframes animate {
   0%{
     opacity: 0.3;
@@ -71,4 +80,73 @@ animation: animate 2s ease-in-out infinite;
     opacity: 1;
   }
   
+}
+
+.spin {
+  animation: spin 1.4s linear infinite;
+}
+::placeholder{
+  color: red;
+}  
+.input-control-wraper input{
+  outline: none !important;
+  border: none !important;
+  box-shadow: 0;
+  background-color: transparent;
+  height: 100%;
+}
+
+.input-control-wraper input:focus{
+  outline: none !important;
+  border: none !important;
+}
+
+ .input-control{
+  border: none;
+  background-color: transparent;
+  box-shadow: 0 0px 1px 0px #1c213e;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+/* Autofill background color for Chrome */
+input:-webkit-autofill {
+  background-color: #1c213e !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Autofill background color for Firefox */
+input:-moz-autofill {
+  background-color: #1c213e !important;
+  -moz-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Autofill background color for Safari */
+input:-webkit-autofill {
+  background-color: #1c213e !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 500s ease-in-out 0s;
+}
+
+
+.inputSearchControl .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root{
+  border-radius: 25px !important;
+  width: 230px;
+ 
+}
+
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+.mapboxgl-ctrl-logo{
+  display: none !important;
+}
+.mapboxgl-ctrl-bottom-right{
+display: none !important;
+}
+.mapboxgl-ctrl-top-right{
+  display: none !important;
 }

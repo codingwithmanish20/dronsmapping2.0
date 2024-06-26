@@ -18,6 +18,11 @@ import OtpModel from "./components/OtpModel";
 import LoadingScreen from "./components/LoadingScreen";
 import api from './services'
 import { startTokenRefreshInterval } from "./helper/refreshToken";
+import ResetPasswordRequest from "./components/ResetPasswordRequest";
+import ResetPasswordForm from "./components/ResetPaswordForm";
+import ProjectDetails from "./pages/ProjectDetails";
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+const UploadImageDashboard = React.lazy(() => import('./pages/UploadImageDashboard'));
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isLogIn, setIsLogIn] = useState(true);
@@ -37,6 +42,7 @@ const App = () => {
       console.error('Error while calling user data')
       setLoading(false)
       localStorage.removeItem("auth-user")
+      localStorage.removeItem('intervalId')
 
     }
   }
@@ -56,8 +62,11 @@ const App = () => {
       <Route path="/newSignUp" element={<NewSignUp />} />
       <Route path="/ForgetPassword" element={<ForgetPassword />} />
       <Route path="/otp" element={<OtpModel />} />
+      <Route path="/password-reset/request" element={<ResetPasswordRequest />} />
+      <Route path="/password-reset/verify" element={<ResetPasswordForm />} />
       <Route path="/uploadDataProcessing" element={<UploadDataProcessing />} />
-      
+      <Route path="/project/upload" element={<UploadImageDashboard />} />
+     
       <Route path="/" element={<SideBar />}>
         <Route
           path="/"
@@ -72,6 +81,22 @@ const App = () => {
           element={
             <ProtectedRoute>
               <NewProject />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/project/:id/details"
+          element={
+            <ProtectedRoute>
+              <ProjectDetails />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/upload"
+          element={
+            <ProtectedRoute>
+              <UploadImageDashboard />
             </ProtectedRoute>
           }
         />
@@ -91,7 +116,11 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+       
       </Route>
+      <Route path="/*" element={<NotFound />} />
+
+
     </Routes>
   );
 };

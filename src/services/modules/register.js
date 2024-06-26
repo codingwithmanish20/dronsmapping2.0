@@ -30,9 +30,16 @@ export const register = {
         }
         return await mappingService.put('/account/regenrate-access-token', payload)
     },
+    async resetPasswordOTpVerification(payload){
+        return await mappingService.put('/account/TBD', payload)
+
+    },
     async verifyTurnstile(secretKey,token){
         const payload=`secret=${secretKey}&response=${token}`
         return await mappingService.post("https://challenges.cloudflare.com/turnstile/v0/siteverify",payload)
+    },
+    async verifyOtp(payload){
+        return await mappingService.put('/account/verify-otp', payload)
     }
 
 }

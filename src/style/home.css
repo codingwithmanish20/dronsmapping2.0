@@ -1,18 +1,14 @@
 .outer_wraper {
   height: auto;
   border-radius: 10px;
-  /* padding: 30px 30px; */
   margin: 32px 16px;
   background-color: #F5F6FF;
-  height:80vh;
+  padding:16px 12px;
 }
 
 .inner_wraper {
   height: auto;
   border-radius: 10px;
-  /* box-shadow: 0px 0px 3px 0px black; */
-  /* padding: 5px 10px; */
-  /* margin: 20px 20px; */
 }
 
 .outer_header {
@@ -26,32 +22,22 @@
   padding: 12px 20px;
 
 }
-
 .card {
-  width: 450px;
-  border: 2px solid #ccc;
-  transition: height 0.3s ease;
+  width: 100%;
+  display: block;
   cursor: pointer;
-  margin-top: 15px;
-  border-radius: 20px;
-  margin-bottom: 20px;
+  border-radius: 15px;
   background-color: #1c213e;
   color: #96979f;
 }
-
 .card-content {
-  /* padding: 23px; */
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: auto;
-  max-height: 400px;
+  width: 100%;
+  height: 68vh;
   overflow-y: auto;
-  /* padding-right: 10px; */
+  overflow-x: hidden;
+ padding-bottom: 80px;
   transition: transform 0.3s ease;
-  /* width: 100% !important; */
-
 }
 
 .card-content-wrapper {
@@ -59,26 +45,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  /* justify-content: space-between;
-  align-items: center; */
-  transition: height 0.3s ease-in;
   border-radius: 17px;
 }
 
-.card-content-wrapper:hover {
-  height: 150px !important;
-  background-color: #1c213e;
-  /* color: white; */
-  border-radius: 17px;
-}
 
-.card-content:hover {
-  height: 400px !important;
-}
-
-.card.expanded {
-  height: 200px;
-}
 .nameField .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root{
   border-radius: 40px !important;
 }

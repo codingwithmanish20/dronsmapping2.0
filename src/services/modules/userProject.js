@@ -2,13 +2,13 @@ import mappingService from "../http";
 
 export const user={
     async activeProject(){
-        return mappingService.put('/user-project/active-project')
+        return mappingService.put('/user-project/activate-project')
     },
     async deactiveProject(){
         return mappingService.delete('/user-project/deactivate-project')
     },
-    async transferOwnership(){
-        return mappingService.put('/user-project/transfer-ownership')
+    async transferOwnership(payload){
+        return mappingService.delete('/user-project/transfer-ownership',payload)
     },
     async removeUser(){
         return mappingService.delete('/user-project/remove-user')

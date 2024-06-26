@@ -13,6 +13,7 @@ import "../style/login.css";
 import useToast from '../hooks/useToast.js'
 import { errorHandler } from "../helper/handleError.js";
 import { blue } from '@mui/material/colors';
+import PrimaryButton from "../shared/PrimaryButton.jsx";
 const ForgetPassword = () => {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setisValidPassword] = useState(false);
@@ -27,7 +28,7 @@ const ForgetPassword = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusPasswod, setIsFocusPassword] = useState(false); // we are using it for confirm password Focus
   let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
-const toast = useToast()
+  const toast = useToast()
   const StyledIconButton = styled(IconButton)({
     color: "white", // Adjust the color here
   });
@@ -85,31 +86,32 @@ const toast = useToast()
     }
   }, [email]);
 
-  const handleResetPassword = async() => {
+  // Pending
+  const handleResetPassword = async () => {
     setLoading(true)
+    const auth = localStorage.getItem('auth')
     try {
-      const payload=JSON.stringify({
-        user_email:email
+      const payload = JSON.stringify({
+       email:auth?.email,
+       new_password:password,
+       otp:auth?.otp
       })
-      const res=await api.register.sendResetPasswordOTPEmail(payload)
-      console.log('res',res)
-      localStorage.setItem("OtpTitle", "Reset");
-      localStorage.setItem("auth",JSON.stringify({email,password}));
+      const res = await api.register.resetPassword(payload)
       setLoading(false)
-       navigate("/otp");
+      //  navigate("/otp");
     } catch (error) {
-      const errorMessage=errorHandler(error)
-      toast(errorMessage,'error')
+      const errorMessage = errorHandler(error)
+      toast(errorMessage, 'error')
       setLoading(false)
 
-      
+
     }
-    
+
   };
 
-  const isDisabled = !email || !password || !confirmPassword || !isValidPassword;
+  const isDisabled = !password || !confirmPassword || !isValidPassword;
 
-  console.log('isDisabled',isDisabled)
+  console.log('isDisabled', isDisabled)
   return (
     <>
       <Box className="main-login">
@@ -134,124 +136,93 @@ const toast = useToast()
           >
             Enter your Credentials to access your account
           </p>
-          <TextField
-            placeholder="Email"
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            className="loginField"
-          />
-          {email !== "" && isValidEmail == false && (
-            <p style={{ color: "red", marginLeft: "20px",marginBottom:"-10px" }}>
-              {"please write the valid email address"}
-            </p>
-          )}
-          <TextField
-            placeholder="Password"
-            type={showPassword ? "text" : "password"}
-            name="password" // Add name prop
-            value={password}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {isFocused && (
-                    <StyledIconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </StyledIconButton>
-                  )}
-                </InputAdornment>
-              ),
-            }}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            className="loginField"/>
-          {password !== "" && !isValidPassword && (
-            <p style={{ color: "red" ,marginLeft:"20px",marginBottom:"-10px"}}>
-              Password must be at least 8 characters long
-            </p>
-          )}
-          <TextField
-            placeholder="Confirm Password"
-            type={showConfirmPassword ? "text" : "password"}
-            name="confirmPassword" // Add name prop
-            value={confirmPassword}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {isFocusPasswod && (
-                    <StyledIconButton
-                      onClick={handleClickShowConfirmPassword}
-                      onMouseDown={handleMouseDownConfirmPassword}
-                    >
-                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
-                    </StyledIconButton>
-                  )}
-                </InputAdornment>
-              ),
-            }}
-            onFocus={handleConfirmFocus}
-            onBlur={handleBlurPassword}
-            className="loginField"
-          />
-          {confirmPassword !== "" && confirmPassword!==password && (
-            <p style={{ color: "red" ,marginLeft:"20px",marginBottom:"-10px"}}>
-               confirm password does not match the password
-            </p>
-          )}
-          
-          <Button
-            variant="contained"
-           
-            fullWidth
-            className="loginBtn"
-            onClick={handleResetPassword}
-            disabled={isDisabled}
-          >
-             {loading && (
-          <CircularProgress
-            size={24}
-           sx={{color:blue[500]}}
-          />
-        )}
-            {loading ? "Logging in..." : "Reset password"}
-          </Button>
-       
 
+
+
+          <div className="flex flex-col gap-4">
+            <div>
+              <TextField
+                placeholder="Password"
+                type={showPassword ? "text" : "password"}
+                name="password" // Add name prop
+                value={password}
+                autoComplete="new-password"
+                onChange={handleChange}
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {isFocused && (
+                        <StyledIconButton
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </StyledIconButton>
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="loginField" />
+              {password !== "" && !isValidPassword && (
+                <p style={{ color: "red", marginLeft: "10px", marginBottom: "-10px", fontSize: '12px' }}>
+                  Password must be at least 8 characters long
+                </p>
+              )}
+
+            </div>
+            <div className="relative">
+              <TextField
+                placeholder="Confirm Password *********"
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={handleChange}
+
+                autoComplete="new-password"
+                variant="outlined"
+                fullWidth
+                // margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {isFocusPasswod && (
+                        <StyledIconButton
+                          onClick={handleClickShowConfirmPassword}
+                          onMouseDown={handleMouseDownConfirmPassword}
+                        >
+                          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                        </StyledIconButton>
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+                onFocus={handleConfirmFocus}
+                onBlur={handleBlurPassword}
+                className="loginField"
+              />
+              {confirmPassword !== "" && confirmPassword !== password && (
+                <p style={{ color: "red", marginLeft: "10px", marginBottom: "-10px", fontSize: '12px' }}>
+                  Passwords do not match.
+                </p>
+              )}
+              <NavLink className="text-xs text-softBlue font-semibold underline absolute right-0 top-[42px]" to="/password-reset/request">Forget Password</NavLink>
+            </div>
+          </div>
+          <div className="mt-8">
+            <PrimaryButton isLoading={loading} disabled={isDisabled} onClick={handleResetPassword} label={"Reset Password"} />
+          </div>
           <p
-            style={{
-              marginBottom: "40px",
-              fontFamily: "sans-serif",
-              fontSize: "12px",
-              color: "gray",
-              fontWeight: 500,
-              textAlign: "center",
-              display: "block",
-              marginTop: "20px",
-            }}
+            className="text-[12px] text-muted mt-1"
           >
             Not Registered Yet ?{" "}
             <NavLink
@@ -265,9 +236,7 @@ const toast = useToast()
             >
               Sign Up Now
             </NavLink>
-            {/* <Link href="#" style={{ textDecoration: "none", fontWeight: 700 }}>
-            Sign Up Now ?
-          </Link> */}
+
           </p>
         </Box>
       </Box>

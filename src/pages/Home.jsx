@@ -2,28 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import HomeDashbordHeader from "../components/HomeDashbordHeader";
 import "../style/home.css";
 import { Box } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import Grid from "@mui/material/Grid";
-import CircularProgress from "@mui/material/CircularProgress";
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { parseISO, format } from 'date-fns'
 import mapboxgl from "mapbox-gl";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { NavLink, useNavigate } from 'react-router-dom';
-import moment from 'moment';
-import  Bom from   "../Images/business-corporate-protection-safety-security-concept.jpg"
+import { useNavigate } from 'react-router-dom';
 import api from '../services'
-import { startTokenRefreshInterval } from "../helper/refreshToken";
 import { sortProjectsByDate } from "../helper/sortProjectsByDate";
-
-
-
+import InputSearchControl from "../components/ui/InputSearchControl";
+import Loading from "../shared/Loading";
 const Home = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -34,24 +22,14 @@ const Home = () => {
 
   const [defaultLng, setDefaultLng] = useState(78.9629);
   const [defaultLat, setDefaultLat] = useState(20.5937);
-
-  const [mapCenter, setMapCenter] = useState([defaultLng, defaultLat]);
-
-  const [searchText, setSearchText] = useState("");
-  const [searchCategory, setSearchCategory] = useState(""); // New state for category search
-  const [selectedValue, setSelectedValue] = useState("0");
-
-  const [open, setOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const [expandedProject, setExpandedProject] = useState(null);
   const [filteredProjects, setFilteredProjects] = useState([]);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [mapCenter, setMapCenter] = useState([defaultLng, defaultLat]);
+
+  const [selectedValue, setSelectedValue] = useState("0");
+  const navigate = useNavigate()
 
 
   const fetchProjects = async () => {
@@ -114,47 +92,9 @@ const Home = () => {
     width: "90%",
     height: "57vh",
     borderRadius: "20px",
-    marginLeft: "50px",
+    marginLeft: "10px",
     marginTop: "-10px",
   };
-
-
-//   const handleChange = (event) => {
-//   const value = event.target.value;
-//   setSelectedValue(value);
-
-//   let sortedProjects;
-
-//   console.log('Original Projects:', projects);
-
-//   if (value === '0') {
-//     sortedProjects = [...projects].sort((a, b) => {
-//       const dateA = parseISO(a.CreationTimeStep);
-//       console.log("IF Statement A", dateA);
-
-//       const dateB = parseISO(b.CreationTimeStep);
-//       console.log("IF StateMent B", dateB);
-//       return dateA - dateB;
-//     });
-//   } else {
-//     sortedProjects = [...projects].sort((a, b) => {
-//       const dateA = parseISO(a.CreationTimeStep);
-//       console.log("Else date A", dateA);
-//       const dateB = parseISO(b.CreationTimeStep);
-//       console.log("else Data B", dateB);
-//       return dateB - dateA;
-//     });
-//   }
-
-//   console.log('Sorted Projects:', sortedProjects);
-
-//   setFilteredProjects(sortedProjects);
-// };
-
-
-
-
-
 
 const handleChange = (event) => {
   const value = Number(event.target.value);
@@ -168,35 +108,8 @@ const handleChange = (event) => {
 };
   
   
-
-  const buttonStyles = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "8px 16px",
-    borderRadius: "4px",
-    backgroundColor: "#007bff",
-    color: "#ffffff",
-    cursor: "pointer",
-    border: "none",
-    outline: "none",
-    transition: "background-color 0.3s",
-    marginLeft: "12px",
-  };
-
-  const iconStyles = {
-    marginRight: "8px",
-  };
-  const navigate = useNavigate()
-
-  const handleRedirectSignUP = () => {
-    navigate('/SignUp');
-  };
-
   const handleSearch = (event) => {
     const searchTerm = event.target.value;
-    setSearchText(searchTerm);
-
     const filteredProjects = projects.filter(
       (project) =>
         project?.project_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -206,13 +119,9 @@ const handleChange = (event) => {
     setFilteredProjects(filteredProjects);
   };
 
-  const categoryImages = {
-    Highways: Bom,
-  };
-
+ 
   const handleCategorySearch = (event) => {
     const category = event.target.value;
-    setSearchCategory(category);
 
     const filteredProjectsByCategory = projects.filter(
       (project) => project.category.toLowerCase().includes(category.toLowerCase())
@@ -222,7 +131,7 @@ const handleChange = (event) => {
   };
 
   const handleMouseEnter = (projectId, lat, lng) => {
-    setExpandedProject(projectId);
+
 
     const markerLng = isNaN(lng) ? defaultLng : lng;
     const markerLat = isNaN(lat) ? defaultLat : lat;
@@ -246,16 +155,12 @@ const handleChange = (event) => {
   };
 
 
-  const handleDeactivateProject=async()=>{
-    try {
-  const res=await api.user.deactiveProject()
-      
-    } catch (error) {
-      console.error('Error::whle calling deactivate project api',error)
-      
-    }
+  const  handleProjectCardClick=(id)=>{
+    navigate(`/project/${id}/details`)
+  
 
   }
+
 
   return (
     <>
@@ -263,38 +168,9 @@ const handleChange = (event) => {
       <Box className="outer_wraper">
         <Box className="outer_header mr-9 pb-2">
           <Box className="flex gap-4">
-            <TextField
-            size="small"
-              variant="outlined"
-              label="Search Project By Name"
-              value={searchText}
-              onChange={handleSearch}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              className="nameField"
-            />
-            <TextField
-              variant="outlined"
-              size="small"
-              id="outlined-basic" 
-              label="Search Project By Category"
-              value={searchCategory}
-              onChange={handleCategorySearch}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              className="nameField"
-           
-            />
+          <InputSearchControl handleSearch={handleSearch} hintText={"Search project by name"} />
+          <InputSearchControl handleSearch={handleCategorySearch} hintText={"Search project by category"} />
+        
           </Box>
 
           <Box className="outer_right">
@@ -315,22 +191,18 @@ const handleChange = (event) => {
           </Box>
         </Box>
 
-        <Box className="inner_wraper"  style={{ marginTop:"8px"  }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6} lg={5}>
-              <div className="card-content">
-                {loading ? (
-                  <CircularProgress style={{ marginTop: "10rem" }} />
-                ) : filteredProjects?.length === 0 ? (
-                  <h3 style={{ marginTop: "10rem" }} className="font-semibold text-gray-400">
-                    No projects available for this name or category.
-                  </h3>
-                ) : (
-                  filteredProjects?.map((project, index) => (
+        <Box className="inner_wraper mt-4">
+          <Grid container spacing={1}>
+            <Grid item xs={12} md={6} lg={5} mt={0} className="card-content">
+              <div className="flex w-full flex-col gap-4 bg-white p-4">
+                {
+                   filteredProjects?.length === 0 ? (
+                    <h3 style={{ marginTop: "10rem" }} className="font-semibold text-gray-400">
+                      No projects available for this name or category.
+                    </h3>
+                  ): filteredProjects?.map((project, index) => (
                     <div
-                      className={`card ${
-                        expandedProject === project.project_id ? "expanded" : ""
-                      }`}
+                      className={`card `}
                       onMouseEnter={() =>
                         handleMouseEnter(
                           project.project_id,
@@ -340,15 +212,17 @@ const handleChange = (event) => {
                       }
                       onMouseLeave={handleMouseLeave}
                       key={index}
+                      onClick={()=>handleProjectCardClick(project?.project_id)}
                   
                     >
                       <div className="card-content-wrapper">
-                        <h5><span className="text-white">Project Name : </span>{project.project_name}</h5>
-                        <h5><span className="text-white">Project Category :</span> {project.category}</h5>
+                        <p><span className="text-white">Project Name : </span>{project.project_name}</p>
+                        <p><span className="text-white">Project Category :</span> {project.category}</p>
                       </div>
-                    </div>
+                    </div> 
                   ))
-                )}
+
+                }
               </div>
             </Grid>
 
@@ -362,6 +236,7 @@ const handleChange = (event) => {
           </Grid>
         </Box>
       </Box>
+      <Loading isVisible={loading} />
     </>
   );
 };

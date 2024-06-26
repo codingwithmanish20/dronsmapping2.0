@@ -285,7 +285,7 @@ const NewProject = () => {
         style={{ margin: "10px 12px", borderRadius: "2px" }}
       >
         <Grid container style={{ backgroundColor: "#F5F6FF" }}>
-          <Grid item xs={4}>
+          <Grid item lg={5}>
             <Box className="left-form-wraper">
               <form  className="left_form" >
                 <TextField
@@ -440,8 +440,8 @@ const NewProject = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={7}>
-            <Box className="Right_map">
+          <Grid item lg={7}>
+            <Box className="Right_map  me-6">
               <p
                 style={{
                   marginLeft: "50px",

@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import newprojectSlice from "./newprojectSlice";
-
+import loadingslice from "./loadingslice";
 
 const store = configureStore({
   reducer: {
-    newprojects : newprojectSlice
+    newprojects : newprojectSlice,
+    loading:loadingslice
   },
 });
 

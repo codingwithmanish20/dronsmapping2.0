@@ -1,0 +1,10 @@
+
+    export const PROJECT_DACTIVATION_SUCCESS="Project successfully deactivated."
+    export const PROJECT_ACTIVATION_SUCCESS="Project successfully activated."
+    export const  CONFIRMATION_MESAGE= "Are you sure you want to deactivate this project?"
+    export const TRANSFER_OWNERSHIP_MESSAGE="Are you sure you want to assign project ownership to this member? You will transfer all administrative rights and responsibilities. This action can be reversed if necessary."
+    export const CANCEL="Cancel"
+    export const YES="YES"
+    export const ASSIGN="Assign"
+    export const CONFIRM="Confirm"
+    export const ACTIVATE_CONFIRMATION_MESAGE="Are you sure you want to activate this project?"

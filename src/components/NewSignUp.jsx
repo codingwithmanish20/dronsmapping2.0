@@ -10,10 +10,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Images/logo2.png";
 import Turnstile, { useTurnstile } from "react-turnstile";
 import "../style/login.css";
-import  api from '../services'
+import api from '../services'
 import useToast from "../hooks/useToast";
 // import { Turnstile } from '@marsidev/react-turnstile'
 import { errorHandler } from "../helper/handleError";
+import PasswordControl from "./ui/PasswordControl";
+import InputControl from "./ui/InutControl";
 
 // site key in the HTML code your site serves to users. =>  6Lfk-dEpAAAAAFKRUVL3DOCB3gjiX3Ib5PQ7XPoX
 // communicate btw site and recapcha => 6Lfk-dEpAAAAAOrMp7sVP7AjNZ77ek5j_8vOFQam
@@ -26,10 +28,11 @@ const NewSignUp = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [user,setUser]=useState({
-    name:'',
-    email:'',
-    password:''
+  const [token, setToken] = useState(false)
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: ''
   })
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -38,7 +41,7 @@ const NewSignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusPasswod, setIsFocusPassword] = useState(false); // we are using it for confirm password Focus
-const toast=useToast()
+  const toast = useToast()
   const StyledIconButton = styled(IconButton)({
     color: "white", // Adjust the color here
   });
@@ -72,37 +75,34 @@ const toast=useToast()
     setIsFocusPassword(false);
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-  const handleMouseDownConfirmPassword = (event) => {
-    event.preventDefault();
-  };
+
   // const turnstile = useTurnstile();
 
-  const isDisabled = !user.email || !user.password || !user.name;
+  const isDisabled = !user.email || !user.password || !user.name || !token;
 
-  const handleSubmit=async()=>{
+  const handleSubmit = async () => {
     setLoading(true)
     try {
-      const res=await api.register.signup(user)
-      if(res.status=201){
-        const message=res?.data?.message
-        toast(message,'success')
+      const res = await api.register.signup(user)
+      if (res.status = 201) {
+        const message = res?.data?.message
+        toast(message, 'success')
+        setToken("")
         setLoading(false)
       }
       setLoading(false)
     } catch (error) {
-      console.error('Error while calling singup api',error)
-      const errorMessage=errorHandler(error)
-      toast(errorMessage,'error')
+      console.error('Error while calling singup api', error)
+      const errorMessage = errorHandler(error)
+      toast(errorMessage, 'error')
       setLoading(false)
-      
+
     }
   }
-  const handleVerify=async(token)=>{
-    console.log('verified',token)
-    const SECRET_KEY="0x4AAAAAAAc19MLJ4z2_D4v-oDvm2R_Gv1o"
+  const handleVerify = async (token) => {
+    console.log('verified', token)
+    const SECRET_KEY = "0x4AAAAAAAc19MLJ4z2_D4v-oDvm2R_Gv1o"
+    setToken(token)
     try {
       // const res=await api.register.verifyTurnstile(secretkey,token)
       // console.log('transtile res',res)
@@ -113,12 +113,12 @@ const toast=useToast()
         },
         body: `secret=${SECRET_KEY}&response=${token}`,
       });
-      
+
     } catch (error) {
-      console.error("Error::",error)
-      
+      console.error("Error::", error)
+
     }
-    
+
 
   }
   return (
@@ -141,77 +141,24 @@ const toast=useToast()
           >
             Enter your Credentials to access your account
           </p>
-          <TextField
-            placeholder="Username"
-            type="text"
-            autoComplete="off"
-            name="name" // Add name prop
-            value={user.name}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            className="loginField"
-          />
-          <TextField
-            placeholder="Email"
-            type="email"
-            name="email" // Add name prop
-            value={user.email}
-            onChange={handleChange}
-            variant="outlined"
-            autoComplete="off"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            className="loginField"
-          />
-          <TextField
-            placeholder="Password"
-            type={showPassword ? "text" : "password"}
-            name="password" 
-            autoComplete="off"
-            value={user.password}
-            onChange={handleChange}
-            style={{ marginBottom: "20px" }}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {isFocused && (
-                    <StyledIconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </StyledIconButton>
-                  )}
-                </InputAdornment>
-              ),
-            }}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            className="loginField"
-          />
-          <div className="">
-             <Turnstile
-             className="mb-4 !w-full !rounded-lg" 
-        // executution="execute"
-        // appearance="always"
-      sitekey="0x4AAAAAAAc19PLhfHqn4C6y"
-      onVerify={handleVerify}
-      
-    />
+
+          <div className="flex flex-col gap-4">
+            <InputControl placeholder={"Username"} name="name" // Add name prop
+              value={user.name}
+              onChange={handleChange} />
+            <InputControl placeholder={"Email"} name={"email"} value={user.email}
+              onChange={handleChange} />
+            <PasswordControl value={user.password} name="password" onChange={handleChange} />
+          </div>
+          <div className=" mt-4">
+            <Turnstile
+              className="mb-4 !w-full !rounded-lg"
+              // executution="execute"
+              // appearance="always"
+              sitekey="0x4AAAAAAAc19PLhfHqn4C6y"
+              onVerify={handleVerify}
+
+            />
           </div>
           <Button
             variant="contained"
@@ -220,13 +167,13 @@ const toast=useToast()
             onClick={handleSubmit}
             disabled={isDisabled || loading}
           >
-            {loading && <CircularProgress size={'1.3rem'}  style={{ color: "white" }} />}
+            {loading && <CircularProgress size={'1.3rem'} style={{ color: "white" }} />}
             {loading ? "Register..." : "Register"}
           </Button>
 
           <p
             style={{
-             
+
               fontFamily: "sans-serif",
               fontSize: "12px",
               color: "gray",
